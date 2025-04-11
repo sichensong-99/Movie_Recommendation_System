@@ -385,9 +385,14 @@ statsDiv.innerHTML = `🔎 Found ${res.total} result${res.total !== 1 ? 's' : ''
         <a href="{{ url_for('movie_list') }}?page={{ current_page - 1 }}" class="page-button">⬅ Previous</a>
     {% endif %}
 
-    <span class="current-page">Page {{ current_page }}</span>
+    <span class="current-page">
+        Page {{ current_page }} of {{ total_pages }}
+    </span>
 
-    <a href="{{ url_for('movie_list') }}?page={{ current_page + 1 }}" class="page-button">Next ➡</a>
+    {% if current_page < total_pages %}
+        <a href="{{ url_for('movie_list') }}?page={{ current_page + 1 }}" class="page-button">Next ➡</a>
+    {% endif %}
 </div>
+
 <div id="searchPagination" class="pagination"></div>
 </html>

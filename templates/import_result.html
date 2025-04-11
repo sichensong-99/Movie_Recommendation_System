@@ -5,82 +5,63 @@
     <title>Import Result</title>
     <style>
         body {
-    background: url("{{ url_for('static', filename='images/images.jpg') }}") no-repeat center center fixed;
-    background-size: cover;
-    font-family: 'Roboto', sans-serif;
-    color: #ffffff;
-    text-align: center;
-    padding-top: 100px;
-    margin: 0;
-}
-
-
-        .message {
-            font-size: 24px;
-            color: #00ff99;
-            margin-bottom: 30px;
-            font-weight: bold;
-            background-color: rgba(0,0,0,0.6);
-            display: inline-block;
-            padding: 20px;
-            border-radius: 10px;
+            background: url("{{ url_for('static', filename='images/images.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Roboto', sans-serif;
+            color: #ffffff;
+            text-align: center;
+            padding-top: 120px;
+            margin: 0;
         }
 
-        .back-button, .next-button {
+        .result-box {
+            background-color: rgba(0, 0, 0, 0.7);
+            display: inline-block;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .result-box h2 {
+            color: #00ff99;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .button-container {
+            margin-top: 30px;
+        }
+
+        .button-container a {
+            display: inline-block;
+            margin: 0 10px;
             background-color: #00ccff;
             color: #111;
             padding: 12px 24px;
             font-size: 18px;
             font-weight: bold;
-            border: none;
             border-radius: 8px;
-            cursor: pointer;
+            text-decoration: none;
             transition: background-color 0.3s ease;
-            margin: 10px;
         }
 
-        .back-button:hover, .next-button:hover {
+        .button-container a:hover {
             background-color: #0099cc;
             color: white;
-        }
-
-        .failed-list {
-            background-color: rgba(255, 0, 0, 0.2);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-            display: inline-block;
-            text-align: left;
-        }
-
-        .failed-list li {
-            color: #ffdddd;
         }
     </style>
 </head>
 <body>
-    <div class="message">
-        ✅ Page {{ page }} imported!<br>
-        ✅ Successfully imported {{ count }} movies.
-    </div><br>
 
-    <a href="{{ url_for('movie_list') }}">
-        <button class="back-button">🎬 Back to Movie List</button>
-    </a>
+    <div class="result-box">
+        <h2>✅ Page {{ page }} imported!</h2>
+        <h2>✅ Successfully imported {{ count }} movies.</h2>
 
-    <a href="{{ url_for('import_movies', page=page+1) }}">
-        <button class="next-button">📥 Import Page {{ page + 1 }}</button>
-    </a>
-
-    {% if failed %}
-        <div class="failed-list">
-            <h3>❌ Failed to import the following movies:</h3>
-            <ul>
-                {% for m in failed %}
-                    <li>ID {{ m.id }} – {{ m.error }}</li>
-                {% endfor %}
-            </ul>
+        <div class="button-container">
+            <a href="{{ url_for('movie_list') }}">🎬 Back to Movie List</a>
+            <a href="{{ url_for('import_movies', page=page + 1) }}">📥 Import Page {{ page + 1 }}</a>
         </div>
-    {% endif %}
+    </div>
+
 </body>
 </html>
