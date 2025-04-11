@@ -376,9 +376,7 @@ statsDiv.innerHTML = `🔎 Found ${res.total} result${res.total !== 1 ? 's' : ''
     </script>
     
 </body>
-<div id="searchStats" style="margin-top: 20px; color: #ffffff; font-weight: bold;">
-    Total Movies: {{ total }} | Total Pages: {{ total_pages }} | Current Page: {{ current_page }}
-</div>
+<div id="searchStats" style="margin-top: 20px; color: #ffffff; font-weight: bold;"></div>
 
 <div class="pagination">
     {% if current_page > 1 %}
