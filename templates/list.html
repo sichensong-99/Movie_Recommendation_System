@@ -192,60 +192,80 @@
 
     <script>
         function updateSearchInput() {
-            var searchRefer = document.getElementById("searchRefer").value;
-            var searchInputContainer = document.getElementById("searchInputContainer");
-
-            // Remove existing input field
-            searchInputContainer.innerHTML = "";
-
-            // Add new input field based on the selected reference
-            if (searchRefer === "title") {
-                var textInput = document.createElement("input");
-                textInput.type = "text";
-                textInput.id = "searchKey";
-                textInput.placeholder = "Search Movie";
-                textInput.size = "15";
-                searchInputContainer.appendChild(textInput);
-            }
+            const searchRefer = document.getElementById("searchRefer").value;
+            const container = document.getElementById("searchInputContainer");
+    
+            container.innerHTML = ""; 
+            const input = document.createElement("input");
+            input.id = "searchKey";
+            input.type = "text";
+            input.size = 15;
+            input.placeholder = "Search " + searchRefer.charAt(0).toUpperCase() + searchRefer.slice(1);
+            container.appendChild(input);
         }
-
-        function performSearch() {
-            var refer = document.getElementById("searchRefer").value;
-            var key = document.getElementById("searchKey").value;
-
-            // Perform AJAX request to get search results as JSON
-            var xhr = new XMLHttpRequest();
+    
+        function performSearch(page = 1) {
+            const refer = document.getElementById("searchRefer").value;
+            const key = document.getElementById("searchKey").value.trim();
+            const tbody = document.querySelector("#movieTable tbody");
+            const stats = document.getElementById("searchStats");
+            const pagination = document.getElementById("searchPagination");
+    
+            if (!key) {
+                alert("Please enter a search keyword.");
+                return;
+            }
+    
+            tbody.innerHTML = "<tr><td colspan='10'>🔎 Searching...</td></tr>";
+            stats.innerHTML = "";
+            pagination.innerHTML = "";
+    
+            const xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                    // Parse the response JSON
-                    var response = JSON.parse(xhr.responseText);
-
-                    // Update the existing table with the search results
-                    var tableContainer = document.getElementById("movieTable");
-                    tableContainer.innerHTML = response.html;
-
-                    // Check if the table header is present, if not, add it
-                    if (!tableContainer.querySelector("#row")) {
-                        tableContainer.innerHTML = "<tr id='row'>" +
-                            "<th>ID</th>" +
-                            "<th>Title</th>" +
-                            "<th>Year</th>" +
-                            "<th>Runtime</th>" +
-                            "<th>Genres</th>" +
-                            "<th>Director</th>" +
-                            "<th>Actors</th>" +
-                            "<th>Plot</th>" +
-                            "<th>Poster URL</th>" +
-                            "<th>Comment</th>" +
-                            "</tr>" + response.html;
+                    const res = JSON.parse(xhr.responseText);
+    
+                    tbody.innerHTML = res.html || "<tr><td colspan='10'>❌ No results found.</td></tr>";
+    
+                    stats.innerHTML = `🔍 Found ${res.total} result${res.total !== 1 ? 's' : ''} | Page ${res.page} of ${res.pages}`;
+    
+                    if (res.pages > 1) {
+                        if (res.page > 1) {
+                            const prev = document.createElement("button");
+                            prev.innerHTML = "⬅ Previous";
+                            prev.className = "page-button";
+                            prev.onclick = () => performSearch(res.page - 1);
+                            pagination.appendChild(prev);
+                        }
+    
+                        for (let i = 1; i <= res.pages; i++) {
+                            const btn = document.createElement("button");
+                            btn.textContent = i;
+                            btn.className = "page-button";
+                            if (i === res.page) btn.classList.add("active-page");
+                            btn.onclick = () => performSearch(i);
+                            pagination.appendChild(btn);
+                        }
+    
+                        if (res.page < res.pages) {
+                            const next = document.createElement("button");
+                            next.innerHTML = "Next ➡";
+                            next.className = "page-button";
+                            next.onclick = () => performSearch(res.page + 1);
+                            pagination.appendChild(next);
+                        }
                     }
+    
+                    document.querySelector(".pagination").style.display = "none";
                 }
             };
-
-            xhr.open("GET", "/search-json?refer=" + refer + "&key=" + key, true);
+    
+            xhr.open("GET", `/search-json?refer=${refer}&key=${key}&page=${page}`, true);
             xhr.send();
         }
     </script>
+<div id="searchStats" style="margin-top: 20px; color: #ffffff; font-weight: bold;"></div>
+<div id="searchPagination" class="pagination"></div>  
 </body>
 
 </html>
