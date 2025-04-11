@@ -126,80 +126,6 @@
             text-decoration: none;
             margin-left: 10px;
         }
-        .detail-button {
-    display: inline-block;
-    padding: 6px 12px;
-    background-color: #00ccff;
-    color: #111;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
-
-.detail-button:hover {
-    background-color: #0099cc;
-    color: white;
-}
-.pagination {
-    margin-top: 30px;
-    text-align: center;
-}
-
-.page-button {
-    display: inline-block;
-    margin: 0 8px;
-    padding: 8px 16px;
-    background-color: #00ccff;
-    color: #111;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.page-button:hover {
-    background-color: #0099cc;
-    color: white;
-}
-
-.current-page {
-    display: inline-block;
-    margin: 0 8px;
-    padding: 8px 16px;
-    background-color: #444;
-    color: #ffcc00;
-    border-radius: 6px;
-    font-weight: bold;
-}
-.pagination {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.page-button {
-    margin: 3px;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 5px;
-    background-color: #00ccff;
-    color: #111;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.page-button:hover {
-    background-color: #0099cc;
-    color: white;
-}
-
-.active-page {
-    background-color: #ffcc00;
-    color: #111;
-    cursor: default;
-}
     </style>
     <!-- Additional Specific Styles -->
     {% block specific_styles %}{% endblock %}
@@ -218,17 +144,9 @@
         <div class="navigation-right">
             {% if 'username' in session %}
                 <span class="welcome-message">Welcome, {{ session['username'] }}</span>
-        
-                {% if session['username'] == 'sia' %}
-                    <a href="{{ url_for('admin_dashboard') }}">
-                        <button class="transparent-button">🛠 Admin Dashboard</button>
-                    </a>
-                {% endif %}
-        
                 <a href="/" class="logout-link">Logout</a>
             {% endif %}
         </div>
-        
     </nav>
 
     <!-- Common Header -->
@@ -239,35 +157,18 @@
     <!-- Page Content -->
     <div class="page-content">
     </div>
-
-    <div style="text-align: left;">
-        <b><big>Search By</big></b>
-        <select id="searchRefer" required onchange="updateSearchInput()">
-            <option value="tmdb_id">TMDb ID</option>
-            <option value="title">Title</option>
-            <option value="year">Year</option>
-            <option value="genres">Genres</option>
-        </select>
-        <span id="searchInputContainer">
-            <input type="text" id="searchKey" placeholder="Search Movie" size="15" />
-        </span>
-        <button onclick="performSearch()">Search</button>
-    </div>
-    <div style="text-align: right; margin: 10px 30px;">
-        <a href="{{ url_for('export_current_page_csv', page=current_page) }}">
-            <button style="padding: 8px 16px;">⬇️ Export This Page</button>
-        </a>
-    </div>
     <table border="1" id="movieTable">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Title</th>
                 <th>Year</th>
+                <th>Runtime</th>
                 <th>Genres</th>
+                <th>Director</th>
+                <th>Actors</th>
                 <th>Plot</th>
                 <th>Poster URL</th>
-                <th>Details</th>
                 <th>Comment</th>
             </tr>
         </thead>
@@ -277,126 +178,75 @@
                 <td>{{ movie.id }}</td>
                 <td>{{ movie.title }}</td>
                 <td>{{ movie.year }}</td>
-                <td>{{ movie.genres|join(', ') }}</td> 
+                <td>{{ movie.runtime }}</td>
+                <td>{{ movie.genres|join(', ') }}</td>
+                <td>{{ movie.director }}</td>
+                <td>{{ movie.actors }}</td>
                 <td>{{ movie.plot }}</td>
-                <td>
-                    {% if movie.posterUrl %}
-                        <img src="{{ movie.posterUrl }}" alt="Poster" style="max-width: 100px; max-height: 150px;">
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="detail-button">🎬 View Details</a>
-                </td>
-                <td>  
-                    <a href="/add?_id={{ movie.id }}&title={{ movie.title }}{% if username %}&username={{ username }}{% endif %}">
-                        <button style="vertical-align: middle;">✍</button>
-                    </a>
-                </td>
+                <td><img src="{{ movie.posterUrl }}" alt="Poster" style="max-width: 100px; max-height: 150px;"></td>
+                <td><a href="/add?_id={{ movie.id }}&title={{ movie.title }}{% if username %}&username={{ username }}{% endif %}"><button style="vertical-align: middle;">✍</button></a></td>
             </tr>
             {% endfor %}
-        </tbody>        
+        </tbody>
     </table>
 
     <script>
         function updateSearchInput() {
             var searchRefer = document.getElementById("searchRefer").value;
             var searchInputContainer = document.getElementById("searchInputContainer");
-    
+
+            // Remove existing input field
             searchInputContainer.innerHTML = "";
-    
-            var textInput = document.createElement("input");
-            textInput.id = "searchKey";
-            textInput.size = "15";
-    
-            if (searchRefer === "year") {
-                textInput.type = "number";
-                textInput.placeholder = "Enter Year";
-            } else if (searchRefer === "id") {
+
+            // Add new input field based on the selected reference
+            if (searchRefer === "title") {
+                var textInput = document.createElement("input");
                 textInput.type = "text";
-                textInput.placeholder = "Enter Movie ID (ObjectId)";
-            } else {
-                textInput.type = "text";
-                textInput.placeholder = "Search " + searchRefer.charAt(0).toUpperCase() + searchRefer.slice(1);
+                textInput.id = "searchKey";
+                textInput.placeholder = "Search Movie";
+                textInput.size = "15";
+                searchInputContainer.appendChild(textInput);
             }
-    
-            searchInputContainer.appendChild(textInput);
         }
-    
-        function performSearch(page = 1) {
-            const refer = document.getElementById("searchRefer").value;
-            const keyInput = document.getElementById("searchKey");
-            const key = keyInput.value.trim();
-            const tableBody = document.querySelector("#movieTable tbody");
-            const pagination = document.getElementById("searchPagination");
-    
-            if (!key) {
-                alert("Please enter a search keyword.");
-                return;
-            }
-    
-            tableBody.innerHTML = "<tr><td colspan='8'>🔄 Searching...</td></tr>";
-            pagination.innerHTML = "";
-    
-            const xhr = new XMLHttpRequest();
+
+        function performSearch() {
+            var refer = document.getElementById("searchRefer").value;
+            var key = document.getElementById("searchKey").value;
+
+            // Perform AJAX request to get search results as JSON
+            var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        const res = JSON.parse(xhr.responseText);
-                        tableBody.innerHTML = res.html || "<tr><td colspan='8'>❌ No results found.</td></tr>";
-    
-                        const statsDiv = document.getElementById("searchStats");
-                        statsDiv.innerHTML = `🔎 Found ${res.total} result${res.total !== 1 ? 's' : ''} | Total Pages: ${res.pages} | Current Page: ${res.page}`;
-    
-                        const totalPages = res.pages || 1;
-                        if (totalPages > 1) {
-                            for (let i = 1; i <= totalPages; i++) {
-                                const btn = document.createElement("button");
-                                btn.textContent = i;
-                                btn.className = "page-button";
-                                if (i === res.page) {
-                                    btn.classList.add("active-page");
-                                }
-                                btn.onclick = function () {
-                                    performSearch(i);
-                                };
-                                pagination.appendChild(btn);
-                            }
-                        }
-                    } else {
-                        tableBody.innerHTML = "<tr><td colspan='8'>⚠️ Error loading results.</td></tr>";
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Parse the response JSON
+                    var response = JSON.parse(xhr.responseText);
+
+                    // Update the existing table with the search results
+                    var tableContainer = document.getElementById("movieTable");
+                    tableContainer.innerHTML = response.html;
+
+                    // Check if the table header is present, if not, add it
+                    if (!tableContainer.querySelector("#row")) {
+                        tableContainer.innerHTML = "<tr id='row'>" +
+                            "<th>ID</th>" +
+                            "<th>Title</th>" +
+                            "<th>Year</th>" +
+                            "<th>Runtime</th>" +
+                            "<th>Genres</th>" +
+                            "<th>Director</th>" +
+                            "<th>Actors</th>" +
+                            "<th>Plot</th>" +
+                            "<th>Poster URL</th>" +
+                            "<th>Comment</th>" +
+                            "</tr>" + response.html;
                     }
                 }
             };
-    
-            xhr.open("GET", `/search-json?refer=${refer}&key=${key}&page=${page}`, true);
+
+            xhr.open("GET", "/search-json?refer=" + refer + "&key=" + key, true);
             xhr.send();
         }
-    </script>    
-    
+    </script>
 </body>
-<div id="searchStats" style="margin-top: 20px; color: #ffffff; font-weight: bold;">
-    Total Movies: {{ total }} | Total Pages: {{ total_pages }} | Current Page: {{ current_page }}
-</div>
-{% if not search_mode %}
-<div class="pagination">
-    {% if current_page > 1 %}
-        <a href="{{ url_for('movie_list') }}?page={{ current_page - 1 }}" class="page-button">⬅ Previous</a>
-    {% endif %}
-
-    <span class="current-page">
-        Page {{ current_page }} of {{ total_pages }}
-    </span>
-
-    {% if current_page < total_pages %}
-        <a href="{{ url_for('movie_list') }}?page={{ current_page + 1 }}" class="page-button">Next ➡</a>
-    {% endif %}
-</div>
-{% endif %}
-
-<div id="searchStats" style="margin-top: 20px; color: #ffffff; font-weight: bold;"></div>
-<div id="searchPagination" class="pagination"></div>
 
 </html>
 
