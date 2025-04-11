@@ -379,7 +379,7 @@
 <div id="searchStats" style="margin-top: 20px; color: #ffffff; font-weight: bold;">
     Total Movies: {{ total }} | Total Pages: {{ total_pages }} | Current Page: {{ current_page }}
 </div>
-
+{% if not search_mode %}
 <div class="pagination">
     {% if current_page > 1 %}
         <a href="{{ url_for('movie_list') }}?page={{ current_page - 1 }}" class="page-button">⬅ Previous</a>
@@ -393,8 +393,11 @@
         <a href="{{ url_for('movie_list') }}?page={{ current_page + 1 }}" class="page-button">Next ➡</a>
     {% endif %}
 </div>
+{% endif %}
 
+<div id="searchStats" style="margin-top: 20px; color: #ffffff; font-weight: bold;"></div>
 <div id="searchPagination" class="pagination"></div>
+
 </html>
 
 
