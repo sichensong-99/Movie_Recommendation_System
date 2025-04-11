@@ -123,9 +123,9 @@
     </tbody>
   </table>
 
-  <div class="pagination">
+  <div id="defaultPagination" class="pagination">
     {% if current_page > 1 %}
-      <a href="{{ url_for('movie_list') }}?page={{ current_page - 1 }}" class="page-button">Previous</a>
+      <a href="{{ url_for('movie_list') }}?page={{ current_page - 1 }}" class="page-button">⬅ Previous</a>
     {% endif %}
 
     <span class="current-page">
@@ -133,7 +133,7 @@
     </span>
 
     {% if current_page < total_pages %}
-      <a href="{{ url_for('movie_list') }}?page={{ current_page + 1 }}" class="page-button">Next</a>
+      <a href="{{ url_for('movie_list') }}?page={{ current_page + 1 }}" class="page-button">Next ➡</a>
     {% endif %}
   </div>
 
@@ -175,7 +175,11 @@
           const res = JSON.parse(xhr.responseText);
           tableBody.innerHTML = res.html || "<tr><td colspan='8'>No results found.</td></tr>";
 
-          statsDiv.innerHTML = `Found ${res.total} result${res.total !== 1 ? 's' : ''} | Total Pages: ${res.pages} | Current Page: ${res.page}`;
+          // Hide default pagination
+          document.getElementById("defaultPagination").style.display = "none";
+
+          // Show search stats
+          statsDiv.innerHTML = `🔎 Found ${res.total} result${res.total !== 1 ? 's' : ''} | Total Pages: ${res.pages} | Current Page: ${res.page}`;
 
           if (res.pages > 1) {
             for (let i = 1; i <= res.pages; i++) {
