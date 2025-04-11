@@ -30,11 +30,16 @@ def get_popular_movies(page):
     response = requests.get(url)
     return response.json() if response.status_code == 200 else {}
 
-mongodb_host = os.environ.get('MONGO_HOST', 'localhost')
-mongodb_port = int(os.environ.get('MONGO_PORT', '27017'))
-client = MongoClient(mongodb_host, mongodb_port)
+mongo_uri = os.environ.get("MONGO_URI")
 
-db = client.camp2023  # Connect to your MongoDB database
+if mongo_uri:
+    client = MongoClient(mongo_uri)
+else:
+    mongodb_host = os.environ.get('MONGO_HOST', 'localhost')
+    mongodb_port = int(os.environ.get('MONGO_PORT', '27017'))
+    client = MongoClient(mongodb_host, mongodb_port)
+    
+db = client.camp2023  
 
 todos = db.movies                 
 users = db.users                 
