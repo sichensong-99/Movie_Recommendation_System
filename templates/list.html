@@ -50,73 +50,73 @@
 </head>
 
 <body>
-  <!-- 省略导航栏和表格部分 -->
+<!-- 原始内容保持不变，重点修复JS部分 -->
+<div id="searchStats" style="margin-top: 20px; color: #ffffff; font-weight: bold;"></div>
 
-  <div id="searchStats" style="margin-top: 20px; color: #ffffff; font-weight: bold;"></div>
-
-  <!-- 原始分页区域，加 id 以便 JS 控制 -->
-  <div id="defaultPagination" class="pagination">
+<div class="pagination">
     {% if current_page > 1 %}
-      <a href="{{ url_for('movie_list') }}?page={{ current_page - 1 }}" class="page-button">⬅ Previous</a>
+        <a href="{{ url_for('movie_list') }}?page={{ current_page - 1 }}" class="page-button">⬅ Previous</a>
     {% endif %}
     <span class="current-page">
-      Page {{ current_page }} of {{ total_pages }}
+        Page {{ current_page }} of {{ total_pages }}
     </span>
     {% if current_page < total_pages %}
-      <a href="{{ url_for('movie_list') }}?page={{ current_page + 1 }}" class="page-button">Next ➡</a>
+        <a href="{{ url_for('movie_list') }}?page={{ current_page + 1 }}" class="page-button">Next ➡</a>
     {% endif %}
-  </div>
+</div>
 
-  <!-- 搜索分页按钮容器 -->
-  <div id="searchPagination" class="pagination"></div>
+<div id="searchPagination" class="pagination"></div>
 
-  <script>
-    function performSearch(page = 1) {
-      const refer = document.getElementById("searchRefer").value;
-      const key = document.getElementById("searchKey").value.trim();
-      const tableBody = document.querySelector("#movieTable tbody");
-      const pagination = document.getElementById("searchPagination");
-      const statsDiv = document.getElementById("searchStats");
+<script>
+function performSearch(page = 1) {
+    const refer = document.getElementById("searchRefer").value;
+    const keyInput = document.getElementById("searchKey");
+    const key = keyInput.value.trim();
+    const tableBody = document.querySelector("#movieTable tbody");
+    const pagination = document.getElementById("searchPagination");
+    const statsDiv = document.getElementById("searchStats");
 
-      if (!key) {
+    if (!key) {
         alert("Please enter a search keyword.");
         return;
-      }
-
-      tableBody.innerHTML = "<tr><td colspan='8'>🔄 Searching...</td></tr>";
-      pagination.innerHTML = "";
-
-      const xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          const res = JSON.parse(xhr.responseText);
-          tableBody.innerHTML = res.html || "<tr><td colspan='8'>❌ No results found.</td></tr>";
-          document.getElementById("defaultPagination").style.display = "none";
-
-          statsDiv.innerHTML = `🔎 Found ${res.total} result${res.total !== 1 ? 's' : ''} | Total Pages: ${res.pages} | Current Page: ${res.page}`;
-
-          const totalPages = res.pages || 1;
-          if (totalPages > 1) {
-            for (let i = 1; i <= totalPages; i++) {
-              const btn = document.createElement("button");
-              btn.textContent = i;
-              btn.className = "page-button";
-              if (i === res.page) {
-                btn.classList.add("active-page");
-              }
-              btn.onclick = function () {
-                performSearch(i);
-              };
-              pagination.appendChild(btn);
-            }
-          }
-        }
-      };
-
-      xhr.open("GET", `/search-json?refer=${refer}&key=${key}&page=${page}`, true);
-      xhr.send();
     }
-  </script>
-</body>
-</html>
 
+    tableBody.innerHTML = "<tr><td colspan='8'>🔄 Searching...</td></tr>";
+    pagination.innerHTML = "";
+
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                const res = JSON.parse(xhr.responseText);
+                tableBody.innerHTML = res.html || "<tr><td colspan='8'>❌ No results found.</td></tr>";
+                statsDiv.innerHTML = `🔎 Found ${res.total} result${res.total !== 1 ? 's' : ''} | Total Pages: ${res.pages} | Current Page: ${res.page}`;
+
+                const totalPages = res.pages || 1;
+                if (totalPages > 1) {
+                    for (let i = 1; i <= totalPages; i++) {
+                        const btn = document.createElement("button");
+                        btn.textContent = i;
+                        btn.className = "page-button";
+                        if (i === res.page) {
+                            btn.classList.add("active-page");
+                        }
+                        btn.onclick = function () {
+                            performSearch(i);
+                        };
+                        pagination.appendChild(btn);
+                    }
+                }
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='8'>⚠️ Error loading results.</td></tr>";
+            }
+        }
+    };
+
+    xhr.open("GET", `/search-json?refer=${refer}&key=${key}&page=${page}`, true);
+    xhr.send();
+}
+</script>
+</body>
+
+</html>
