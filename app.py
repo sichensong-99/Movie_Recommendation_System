@@ -646,7 +646,7 @@ def admin_dashboard():
                            log_total_pages=total_pages)
 
 
-
+'''
 @app.route("/make-admin")
 def make_admin():
     username = session.get("username")
@@ -654,7 +654,7 @@ def make_admin():
         return "❌ Please log in first."
 
     users.update_one({"username": username}, {"$set": {"is_admin": True}})
-    return f"✅ User '{username}' is now an admin." 
+    return f"✅ User '{username}' is now an admin." '''
 
 @app.route("/import/movies", methods=["POST"])
 def import_movies():
