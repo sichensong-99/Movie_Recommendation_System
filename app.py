@@ -38,7 +38,7 @@ else:
     mongodb_host = os.environ.get('MONGO_HOST', 'localhost')
     mongodb_port = int(os.environ.get('MONGO_PORT', '27017'))
     client = MongoClient(mongodb_host, mongodb_port)
-    
+
 db = client.camp2023  
 
 todos = db.movies                 
@@ -646,7 +646,7 @@ def admin_dashboard():
                            log_total_pages=total_pages)
 
 
-'''
+
 @app.route("/make-admin")
 def make_admin():
     username = session.get("username")
@@ -654,7 +654,7 @@ def make_admin():
         return "❌ Please log in first."
 
     users.update_one({"username": username}, {"$set": {"is_admin": True}})
-    return f"✅ User '{username}' is now an admin." '''
+    return f"✅ User '{username}' is now an admin." 
 
 @app.route("/import/movies", methods=["POST"])
 def import_movies():
