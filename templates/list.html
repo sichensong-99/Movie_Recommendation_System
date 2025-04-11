@@ -228,7 +228,6 @@
                  <a href="/" class="logout-link">Logout</a>
              {% endif %}
          </div>
-         <a href="#" class="home-button" onclick="toggleHelp()">❓ Help</a>
      </nav>
  
      <!-- Common Header -->
@@ -259,18 +258,18 @@
          </a>
      </div>
      <table border="1" id="movieTable">
-         <thead>
-             <tr>
-                 <th>ID</th>
-                 <th>Title</th>
-                 <th>Year</th>
-                 <th>Genres</th>
-                 <th>Plot</th>
-                 <th>Poster URL</th>
-                 <th>Details</th>
-                 <th>Comment</th>
-             </tr>
-         </thead>
+        <thead>
+            <tr>
+                <th title="Unique ID of the movie in the database">ID</th>
+                <th title="Movie title">Title</th>
+                <th title="Year of release">Year</th>
+                <th title="Genres associated with the movie, e.g., Action, Comedy">Genres</th>
+                <th title="Brief plot summary">Plot</th>
+                <th title="Link to the movie's poster image">Poster URL</th>
+                <th title="Click to view detailed movie information">Details</th>
+                <th title="Click to leave a comment for the movie">Comment</th>
+            </tr>
+        </thead>        
          <tbody>
              {% for movie in movies %}
              <tr>
@@ -372,33 +371,8 @@
      xhr.open("GET", `/search-json?refer=${refer}&key=${key}&page=${page}`, true);
      xhr.send();
  }
- function toggleHelp() {
-    const helpBox = document.getElementById("helpBox");
-    helpBox.style.display = helpBox.style.display === "none" ? "block" : "none";
-}
 
      </script>
-<div id="helpBox" style="display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%);
-background-color: rgba(0,0,0,0.95); padding: 20px; border-radius: 12px; 
-color: white; width: 60%; z-index: 9999; box-shadow: 0 0 10px white;">
-<h2>📘 Help</h2>
-<p><strong>🎬 Title:</strong> The name of the movie.</p>
-<p><strong>📅 Year:</strong> Year the movie was released.</p>
-<p><strong>🕐 Runtime:</strong> Total runtime in minutes.</p>
-<p><strong>🎭 Genres:</strong> Movie categories (e.g., Action, Drama).</p>
-<p><strong>🎬 Director:</strong> The director(s) of the movie.</p>
-<p><strong>🎭 Actors:</strong> Main cast members.</p>
-<p><strong>📝 Plot:</strong> A short summary of the movie.</p>
-<p><strong>🖼 Poster:</strong> Image pulled from TMDB.</p>
-<p><strong>✍ Comment:</strong> You can add your review or rating here.</p>
-<p><strong>🔍 Search:</strong> Choose a filter and enter a keyword (e.g., title, year, genre).</p>
-<p><strong>📄 Pagination:</strong> If there are multiple pages, use the buttons to go forward/backward.</p>
-<p><strong>⬇️ Export:</strong> Click export to download this page’s movie list as a CSV.</p>
-
-<br>
-<button onclick="toggleHelp()" style="background-color:#00ccff; color:#111; padding: 8px 16px; 
-border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Close</button>
-</div>
 
  </body>
  <div id="searchStats" style="margin-top: 20px; color: #ffffff; font-weight: bold;">
