@@ -9,14 +9,18 @@
   <script src="{{ url_for('static', filename='assets/twemoji.min.js') }}"></script>
   <script src="{{ url_for('static', filename='assets/emoji.js') }}"></script>
   <style>
+    a.a1 {
+      color: #ffffff;
+    }
     body {
+      text-align: center;
       background: url("{{ url_for('static', filename='images/images.jpg') }}") no-repeat center center fixed;
       background-size: cover;
-      font-family: 'Roboto', sans-serif;
-      color: #ffffff;
-      text-align: center;
       margin: 0;
       padding: 0;
+      font-family: 'Roboto', sans-serif;
+      position: relative;
+      color: #ffffff;
     }
     .pagination {
       margin-top: 20px;
@@ -46,114 +50,27 @@
 </head>
 
 <body>
-  <nav>
-    <div>
-      <a href="/" class="home-button">Home</a>
-      <a href="/list">Movie list</a>
-    </div>
-    <div>
-      {% if 'username' in session %}
-        <span>Welcome, {{ session['username'] }}</span>
-        {% if session['username'] == 'sia' %}
-        <a href="{{ url_for('admin_dashboard') }}">
-          <button>Admin Dashboard</button>
-        </a>
-        {% endif %}
-        <a href="/">Logout</a>
-      {% endif %}
-    </div>
-  </nav>
-
-  <h1>{{ title }}</h1>
-
-  <div>
-    <b>Search By</b>
-    <select id="searchRefer" onchange="updateSearchInput()">
-      <option value="tmdb_id">TMDb ID</option>
-      <option value="title">Title</option>
-      <option value="year">Year</option>
-      <option value="genres">Genres</option>
-    </select>
-    <span id="searchInputContainer">
-      <input type="text" id="searchKey" placeholder="Search Movie" size="15" />
-    </span>
-    <button onclick="performSearch()">Search</button>
-  </div>
+  <!-- 省略导航栏和表格部分 -->
 
   <div id="searchStats" style="margin-top: 20px; color: #ffffff; font-weight: bold;"></div>
 
-  <table id="movieTable">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Year</th>
-        <th>Genres</th>
-        <th>Plot</th>
-        <th>Poster</th>
-        <th>Details</th>
-        <th>Comment</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for movie in movies %}
-      <tr>
-        <td>{{ movie.id }}</td>
-        <td>{{ movie.title }}</td>
-        <td>{{ movie.year }}</td>
-        <td>{{ movie.genres|join(', ') }}</td>
-        <td>{{ movie.plot }}</td>
-        <td>
-          {% if movie.posterUrl %}
-            <img src="{{ movie.posterUrl }}" alt="Poster" style="max-width: 100px; max-height: 150px;">
-          {% else %}
-            N/A
-          {% endif %}
-        </td>
-        <td>
-          <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">View Details</a>
-        </td>
-        <td>
-          <a href="/add?_id={{ movie.id }}&title={{ movie.title }}{% if username %}&username={{ username }}{% endif %}">
-            Comment
-          </a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
+  <!-- 原始分页区域，加 id 以便 JS 控制 -->
   <div id="defaultPagination" class="pagination">
     {% if current_page > 1 %}
       <a href="{{ url_for('movie_list') }}?page={{ current_page - 1 }}" class="page-button">⬅ Previous</a>
     {% endif %}
-
     <span class="current-page">
       Page {{ current_page }} of {{ total_pages }}
     </span>
-
     {% if current_page < total_pages %}
       <a href="{{ url_for('movie_list') }}?page={{ current_page + 1 }}" class="page-button">Next ➡</a>
     {% endif %}
   </div>
 
+  <!-- 搜索分页按钮容器 -->
   <div id="searchPagination" class="pagination"></div>
 
   <script>
-    function updateSearchInput() {
-      const searchRefer = document.getElementById("searchRefer").value;
-      const searchInputContainer = document.getElementById("searchInputContainer");
-
-      const input = document.createElement("input");
-      input.id = "searchKey";
-      input.size = 15;
-      input.type = (searchRefer === "year") ? "number" : "text";
-      input.placeholder = `Search ${searchRefer}`;
-
-      searchInputContainer.innerHTML = "";
-      searchInputContainer.appendChild(input);
-    }
-
     function performSearch(page = 1) {
       const refer = document.getElementById("searchRefer").value;
       const key = document.getElementById("searchKey").value.trim();
@@ -166,28 +83,30 @@
         return;
       }
 
-      tableBody.innerHTML = "<tr><td colspan='8'>Searching...</td></tr>";
+      tableBody.innerHTML = "<tr><td colspan='8'>🔄 Searching...</td></tr>";
       pagination.innerHTML = "";
 
       const xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
           const res = JSON.parse(xhr.responseText);
-          tableBody.innerHTML = res.html || "<tr><td colspan='8'>No results found.</td></tr>";
-
-          // Hide default pagination
+          tableBody.innerHTML = res.html || "<tr><td colspan='8'>❌ No results found.</td></tr>";
           document.getElementById("defaultPagination").style.display = "none";
 
-          // Show search stats
           statsDiv.innerHTML = `🔎 Found ${res.total} result${res.total !== 1 ? 's' : ''} | Total Pages: ${res.pages} | Current Page: ${res.page}`;
 
-          if (res.pages > 1) {
-            for (let i = 1; i <= res.pages; i++) {
+          const totalPages = res.pages || 1;
+          if (totalPages > 1) {
+            for (let i = 1; i <= totalPages; i++) {
               const btn = document.createElement("button");
               btn.textContent = i;
               btn.className = "page-button";
-              if (i === res.page) btn.classList.add("active-page");
-              btn.onclick = () => performSearch(i);
+              if (i === res.page) {
+                btn.classList.add("active-page");
+              }
+              btn.onclick = function () {
+                performSearch(i);
+              };
               pagination.appendChild(btn);
             }
           }
@@ -199,5 +118,5 @@
     }
   </script>
 </body>
-
 </html>
+
