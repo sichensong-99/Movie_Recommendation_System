@@ -9,6 +9,10 @@
      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/emoji.css') }}">
      <script src="{{ url_for('static', filename='assets/twemoji.min.js') }}"></script>
      <script src="{{ url_for('static', filename='assets/emoji.js') }}"></script>
+     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css" />
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
      <!-- Page-Specific Styles -->
      <style>
          a.a1 {
@@ -266,8 +270,8 @@
      <table border="1" id="movieTable">
         <thead>
             <tr>
-                <th title="The TMDb movie ID used for searching or referencing.">ID</th>
-                <th title="The official name of the movie.">Title</th>
+                <th data-tippy-content="The TMDb movie ID used for searching or referencing.">ID</th>
+<th data-tippy-content="The official name of the movie.">Title</th>
                 <th title="The year the movie was released.">Year</th>
                 <th title="Categories such as Action, Comedy, Drama, etc.">Genres</th>
                 <th title="A short summary or description of the movie's story.">Plot</th>
@@ -377,7 +381,13 @@
      xhr.open("GET", `/search-json?refer=${refer}&key=${key}&page=${page}`, true);
      xhr.send();
  }
-
+ document.addEventListener("DOMContentLoaded", function () {
+    tippy('[data-tippy-content]', {
+      theme: 'light',
+      animation: 'scale',
+      delay: [100, 50],
+    });
+  });
      </script>
 
  </body>
