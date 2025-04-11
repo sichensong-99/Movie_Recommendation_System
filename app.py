@@ -658,6 +658,7 @@ def make_admin():
 
 @app.route("/import/movies", methods=["GET"])
 def import_movies():
+    print(">>> import_movies() called")
     username = session.get("username")
     if not username:
         return "❌ Please log in first.", 403
