@@ -2,272 +2,120 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Common Styles -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/style.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/emoji.css') }}">
-    <script src="{{ url_for('static', filename='assets/twemoji.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/emoji.js') }}"></script>
-    <!-- Page-Specific Styles -->
-    <style>
-        a.a1 {
-            color: #ffffff;
-        }
-
-        body {
-            text-align: center;
-            background: url("{{ url_for('static', filename='images/images.jpg') }}") no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            padding: 0;
-            font-family: 'Roboto', sans-serif;
-            position: relative;
-            color: #ffffff;
-        }
-
-        table {
-            width: 100%;
-            margin: 20px auto;
-            border-collapse: collapse;
-            background-color: transparent;
-        }
-
-        th,
-        td {
-            padding: 12px;
-            border: 1px solid #ffffff;
-        }
-
-        th {
-            background-color: #333333;
-            color: #ffcc00;
-        }
-
-        tr:nth-child(even) {
-            background-color: #555555;
-        }
-
-        tr:nth-child(odd) {
-            background-color: #444444;
-        }
-
-        td:nth-child(9) {
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        a {
-            text-decoration: none;
-            color: #00ccff;
-        }
-
-        button:hover {
-            background-color: #006699;
-        }
-
-        /* Navigation styles */
-        nav {
-            background-color: #333;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navigation-left {
-            display: flex;
-            align-items: center;
-        }
-
-        .home-button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-right: 10px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            background-color: transparent;
-            color: #ffffff;
-        }
-
-        .home-button:hover {
-            background-color: #006699;
-        }
-
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        ul li {
-            margin: 0 10px;
-        }
-
-        ul li a {
-            text-decoration: none;
-            color: white;
-        }
-
-        .welcome-message {
-            color: #ffffff;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .logout-link {
-            color: #ffffff;
-            font-weight: bold;
-            text-decoration: none;
-            margin-left: 10px;
-        }
-    </style>
-    <!-- Additional Specific Styles -->
-    {% block specific_styles %}{% endblock %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/emoji.css') }}">
+  <script src="{{ url_for('static', filename='assets/twemoji.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/emoji.js') }}"></script>
+  <style>
+    a.a1 {
+      color: #ffffff;
+    }
+    body {
+      text-align: center;
+      background: url("{{ url_for('static', filename='images/images.jpg') }}") no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      position: relative;
+      color: #ffffff;
+    }
+    .pagination {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .page-button {
+      margin: 3px;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      background-color: #00ccff;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .page-button:hover {
+      background-color: #0099cc;
+      color: white;
+    }
+    .active-page {
+      background-color: #ffcc00;
+      color: #111;
+      cursor: default;
+    }
+  </style>
 </head>
 
 <body>
-    <nav>
-        <div class="navigation-left">
-            <a href="/" class="home-button">🏠 Home</a>
-            <ul class="navbar">
-                <li><a href="/list" class="a1">Movie list</a></li>
-                <li><a href="/comment" class="{{ a2 }}">Comment</a></li>
-                <li><a href="/about" class="{{ a3 }}">About me</a></li>
-            </ul>
-        </div>
-        <div class="navigation-right">
-            {% if 'username' in session %}
-                <span class="welcome-message">Welcome, {{ session['username'] }}</span>
-                <a href="/" class="logout-link">Logout</a>
-            {% endif %}
-        </div>
-    </nav>
-
-    <!-- Common Header -->
-    <header>
-        <h1>{{ title }}</h1>
-    </header>
-
-    <!-- Page Content -->
-    <div class="page-content">
-    </div>
-    <table border="1" id="movieTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Year</th>
-                <th>Runtime</th>
-                <th>Genres</th>
-                <th>Director</th>
-                <th>Actors</th>
-                <th>Plot</th>
-                <th>Poster URL</th>
-                <th>Comment</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for movie in movies %}
-            <tr>
-                <td>{{ movie.id }}</td>
-                <td>{{ movie.title }}</td>
-                <td>{{ movie.year }}</td>
-                <td>{{ movie.runtime }}</td>
-                <td>{{ movie.genres|join(', ') }}</td>
-                <td>{{ movie.director }}</td>
-                <td>{{ movie.actors }}</td>
-                <td>{{ movie.plot }}</td>
-                <td><img src="{{ movie.posterUrl }}" alt="Poster" style="max-width: 100px; max-height: 150px;"></td>
-                <td><a href="/add?_id={{ movie.id }}&title={{ movie.title }}{% if username %}&username={{ username }}{% endif %}"><button style="vertical-align: middle;">✍</button></a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <script>
-        function updateSearchInput() {
-            const searchRefer = document.getElementById("searchRefer").value;
-            const container = document.getElementById("searchInputContainer");
-    
-            container.innerHTML = ""; 
-            const input = document.createElement("input");
-            input.id = "searchKey";
-            input.type = "text";
-            input.size = 15;
-            input.placeholder = "Search " + searchRefer.charAt(0).toUpperCase() + searchRefer.slice(1);
-            container.appendChild(input);
-        }
-    
-        function performSearch(page = 1) {
-            const refer = document.getElementById("searchRefer").value;
-            const key = document.getElementById("searchKey").value.trim();
-            const tbody = document.querySelector("#movieTable tbody");
-            const stats = document.getElementById("searchStats");
-            const pagination = document.getElementById("searchPagination");
-    
-            if (!key) {
-                alert("Please enter a search keyword.");
-                return;
-            }
-    
-            tbody.innerHTML = "<tr><td colspan='10'>🔎 Searching...</td></tr>";
-            stats.innerHTML = "";
-            pagination.innerHTML = "";
-    
-            const xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    const res = JSON.parse(xhr.responseText);
-    
-                    tbody.innerHTML = res.html || "<tr><td colspan='10'>❌ No results found.</td></tr>";
-    
-                    stats.innerHTML = `🔍 Found ${res.total} result${res.total !== 1 ? 's' : ''} | Page ${res.page} of ${res.pages}`;
-    
-                    if (res.pages > 1) {
-                        if (res.page > 1) {
-                            const prev = document.createElement("button");
-                            prev.innerHTML = "⬅ Previous";
-                            prev.className = "page-button";
-                            prev.onclick = () => performSearch(res.page - 1);
-                            pagination.appendChild(prev);
-                        }
-    
-                        for (let i = 1; i <= res.pages; i++) {
-                            const btn = document.createElement("button");
-                            btn.textContent = i;
-                            btn.className = "page-button";
-                            if (i === res.page) btn.classList.add("active-page");
-                            btn.onclick = () => performSearch(i);
-                            pagination.appendChild(btn);
-                        }
-    
-                        if (res.page < res.pages) {
-                            const next = document.createElement("button");
-                            next.innerHTML = "Next ➡";
-                            next.className = "page-button";
-                            next.onclick = () => performSearch(res.page + 1);
-                            pagination.appendChild(next);
-                        }
-                    }
-    
-                    document.querySelector(".pagination").style.display = "none";
-                }
-            };
-    
-            xhr.open("GET", `/search-json?refer=${refer}&key=${key}&page=${page}`, true);
-            xhr.send();
-        }
-    </script>
 <div id="searchStats" style="margin-top: 20px; color: #ffffff; font-weight: bold;"></div>
-<div id="searchPagination" class="pagination"></div>  
+
+<div class="pagination">
+    {% if current_page > 1 %}
+        <a href="{{ url_for('movie_list') }}?page={{ current_page - 1 }}" class="page-button">⬅ Previous</a>
+    {% endif %}
+    <span class="current-page">
+        Page {{ current_page }} of {{ total_pages }}
+    </span>
+    {% if current_page < total_pages %}
+        <a href="{{ url_for('movie_list') }}?page={{ current_page + 1 }}" class="page-button">Next ➡</a>
+    {% endif %}
+</div>
+
+<div id="searchPagination" class="pagination"></div>
+
+<script>
+function performSearch(page = 1) {
+    const refer = document.getElementById("searchRefer").value;
+    const keyInput = document.getElementById("searchKey");
+    const key = keyInput.value.trim();
+    const tableBody = document.querySelector("#movieTable tbody");
+    const pagination = document.getElementById("searchPagination");
+    const statsDiv = document.getElementById("searchStats");
+
+    if (!key) {
+        alert("Please enter a search keyword.");
+        return;
+    }
+
+    tableBody.innerHTML = "<tr><td colspan='8'>🔄 Searching...</td></tr>";
+    pagination.innerHTML = "";
+
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                const res = JSON.parse(xhr.responseText);
+                tableBody.innerHTML = res.html || "<tr><td colspan='8'>❌ No results found.</td></tr>";
+                statsDiv.innerHTML = `🔎 Found ${res.total} result${res.total !== 1 ? 's' : ''} | Total Pages: ${res.pages} | Current Page: ${res.page}`;
+
+                const totalPages = res.pages || 1;
+                if (totalPages > 1) {
+                    for (let i = 1; i <= totalPages; i++) {
+                        const btn = document.createElement("button");
+                        btn.textContent = i;
+                        btn.className = "page-button";
+                        if (i === res.page) {
+                            btn.classList.add("active-page");
+                        }
+                        btn.onclick = function () {
+                            performSearch(i);
+                        };
+                        pagination.appendChild(btn);
+                    }
+                }
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='8'>⚠️ Error loading results.</td></tr>";
+            }
+        }
+    };
+
+    xhr.open("GET", `/search-json?refer=${refer}&key=${key}&page=${page}`, true);
+    xhr.send();
+}
+</script>
 </body>
 
 </html>
-
-
