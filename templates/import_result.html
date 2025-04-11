@@ -10,7 +10,7 @@
             font-family: 'Roboto', sans-serif;
             color: #ffffff;
             text-align: center;
-            padding-top: 100px;
+            padding-top: 80px;
         }
 
         .message {
@@ -24,7 +24,7 @@
             border-radius: 10px;
         }
 
-        .back-button {
+        .back-button, .next-button {
             background-color: #00ccff;
             color: #111;
             padding: 12px 24px;
@@ -34,19 +34,51 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            margin-top: 20px;
+            margin: 10px;
         }
 
-        .back-button:hover {
+        .back-button:hover, .next-button:hover {
             background-color: #0099cc;
             color: white;
+        }
+
+        .failed-list {
+            background-color: rgba(255, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            display: inline-block;
+            text-align: left;
+        }
+
+        .failed-list li {
+            color: #ffdddd;
         }
     </style>
 </head>
 <body>
-    <div class="message">✅ Imported {{ count }} movies successfully!</div><br>
+    <div class="message">
+        ✅ Page {{ page }} imported!<br>
+        ✅ Successfully imported {{ count }} movies.
+    </div><br>
+
     <a href="{{ url_for('movie_list') }}">
         <button class="back-button">🎬 Back to Movie List</button>
     </a>
+
+    <a href="{{ url_for('import_movies', page=page+1) }}">
+        <button class="next-button">📥 Import Page {{ page + 1 }}</button>
+    </a>
+
+    {% if failed %}
+        <div class="failed-list">
+            <h3>❌ Failed to import the following movies:</h3>
+            <ul>
+                {% for m in failed %}
+                    <li>ID {{ m.id }} – {{ m.error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 </body>
 </html>

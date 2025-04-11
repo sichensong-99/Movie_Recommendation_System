@@ -656,71 +656,60 @@ def make_admin():
     users.update_one({"username": username}, {"$set": {"is_admin": True}})
     return f"✅ User '{username}' is now an admin." '''
 
-@app.route("/import/movies", methods=["POST"])
+@app.route("/import/movies", methods=["GET"])
 def import_movies():
+    username = session.get("username")
+    if not username:
+        return "❌ Please log in first.", 403
+
+    user = users.find_one({"username": username})
+    if not user or not user.get("is_admin"):
+        return "❌ Access denied. Admin only.", 403
+
+    page = int(request.args.get("page", 1))
     api_key = "0530fc67fb10c009b85f55ef0a0ec0d6"
     imported = 0
     failed_movies = []
 
-    for page in range(1, 4):  # Adjust the page range as needed
+    try:
         url = f"https://api.themoviedb.org/3/movie/popular?api_key={api_key}&language=en-US&page={page}"
+        res = requests.get(url)
+        res.raise_for_status()
+        data = res.json()
+    except Exception as e:
+        return f"❌ Failed to fetch TMDb data: {str(e)}", 500
+
+    for movie in data.get("results", []):
+        movie_id = movie["id"]
         try:
-            res = requests.get(url)
-            if res.status_code != 200:
-                failed_movies.append({"page": page, "error": f"TMDb response: {res.status_code}"})
-                continue
-            data = res.json()
+            detail_url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&language=en-US"
+            credits_url = f"https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={api_key}&language=en-US"
+            reviews_url = f"https://api.themoviedb.org/3/movie/{movie_id}/reviews?api_key={api_key}&language=en-US"
+            recommendations_url = f"https://api.themoviedb.org/3/movie/{movie_id}/recommendations?api_key={api_key}&language=en-US"
+
+            detail = requests.get(detail_url).json()
+            credits = requests.get(credits_url).json()
+            reviews = requests.get(reviews_url).json().get("results", [])
+            recommendations = requests.get(recommendations_url).json().get("results", [])
+
+            movie_cache.replace_one(
+                {"_id": movie_id},
+                {
+                    "_id": movie_id,
+                    "detail": detail,
+                    "credits": credits,
+                    "reviews": reviews,
+                    "recommendations": recommendations,
+                    "cached_at": datetime.utcnow()
+                },
+                upsert=True
+            )
+            imported += 1
         except Exception as e:
-            failed_movies.append({"page": page, "error": str(e)})
-            continue
+            failed_movies.append({"id": movie_id, "error": str(e)})
 
-        for movie in data.get("results", []):
-            movie_id = movie["id"]
+    return render_template("import_result.html", count=imported, failed=failed_movies, page=page)
 
-            try:
-                # API endpoints
-                detail_url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&language=en-US"
-                credits_url = f"https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={api_key}&language=en-US"
-                recommendations_url = f"https://api.themoviedb.org/3/movie/{movie_id}/recommendations?api_key={api_key}&language=en-US"
-                reviews_url = f"https://api.themoviedb.org/3/movie/{movie_id}/reviews?api_key={api_key}&language=en-US"
-
-                # Fetch movie data
-                detail = requests.get(detail_url).json()
-                credits = requests.get(credits_url).json()
-                recommendations = requests.get(recommendations_url).json()
-
-                # Fetch reviews with basic error handling
-                try:
-                    reviews_response = requests.get(reviews_url)
-                    if reviews_response.status_code == 200:
-                        reviews = reviews_response.json().get("results", [])
-                    else:
-                        print(f"⚠️ Could not fetch reviews for movie {movie_id}. Status code: {reviews_response.status_code}")
-                        reviews = []
-                except Exception as e:
-                    print(f"⚠️ Exception while fetching reviews for movie {movie_id}: {str(e)}")
-                    reviews = []
-
-                # Cache into MongoDB
-                db.movie_cache.replace_one(
-                    {"_id": movie_id},
-                    {
-                        "_id": movie_id,
-                        "detail": detail,
-                        "credits": credits,
-                        "recommendations": recommendations.get("results", []),
-                        "reviews": reviews,
-                        "cached_at": datetime.utcnow()
-                    },
-                    upsert=True
-                )
-
-                imported += 1
-
-            except Exception as e:
-                failed_movies.append({"movie_id": movie_id, "error": str(e)})
-
-    return render_template("import_result.html", count=imported, failed=failed_movies)
 
 @app.route("/export/current_page.csv")
 def export_current_page_csv():
