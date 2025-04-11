@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Common Styles -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/emoji.css') }}">
+    <script src="{{ url_for('static', filename='assets/twemoji.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/emoji.js') }}"></script>
+    <!-- Page-Specific Styles -->
+    <style>
+        a.a1 {
+        color: #ffffff;
+    }
+        body {
+            text-align: center;
+            background: url("{{ url_for('static', filename='images/images.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+            color: #ffffff;
+        }
+
+        h1 {
+            margin-top: 50px;
+        }
+        li.welcome {
+    position: absolute;
+    top: 10px;
+    right: 90px;
+    color: #ffffff;
+    font-weight: bold;
+    padding-right: 20px; /* Adjust the padding as needed */
+}
+
+        form {
+            margin-top: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #00ccff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #006699;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to get URL parameter by name
+            function getParameterByName(name, url) {
+                if (!url) url = window.location.href;
+                name = name.replace(/[\[\]]/g, '\\$&');
+                var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            }
+    
+            // Get the movie title from the URL
+            var movieTitle = getParameterByName('title');
+    
+            // Set the default value for the "Movie Name" input field
+            if (movieTitle) {
+                document.getElementsByName('name')[0].value = movieTitle;
+            }
+        });
+    </script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/list" class="a1">Movie list</a></li>
+            <li><a href="/" class="{{ a2 }}">Comment</a></li>
+            <li><a href="/about" class="{{ a3 }}">About me</a></li>
+            {% if username %}
+                <li style="position: absolute; top: 10px; right: 90px; color: #ffffff; font-weight: bold;">Welcome, {{ username }}</li>
+                <a href="/logout" style="position: absolute; top: 10px; right: 10px; color: #ffffff; font-weight: bold; text-decoration: none;">Logout</a>
+            {% endif %}
+        </ul>
+    </nav>
+    
+    <header>
+        <h1>{{ title }}</h1>
+    </header>
+
+    <!-- Page Content -->
+    <div class="page-content">
+        {% block content %}{% endblock %}
+    </div>
+    <header>
+        <h1>Add Comment</h1>
+    </header>
+    <form action="{{ url_for('action') }}{% if username %}?username={{ username }}{% endif %}" method="post">
+        <input type="hidden" name="username" value="{{ username }}">
+        <label for="name">Movie Name:</label>
+        <input type="text" name="name" required><br>
+
+        <label for="comment">Comment:</label>
+        <textarea name="comment" required></textarea><br>
+
+        <label for="date">Date:</label>
+        <input type="date" name="date" required><br>
+
+        <label for="rate">Rate:</label>
+        <select name="rate" required>
+            <option value="Excellent">Excellent</option>
+            <option value="Very Good">Very Good</option>
+            <option value="Good">Good</option>
+            <option value="Fair">Fair</option>
+            <option value="Poor">Poor</option>
+            <option value="Terrible">Terrible</option>
+        </select><br>
+        <input type="submit" value="Submit Comment">
+    </form>
+</body>
+</html>
+

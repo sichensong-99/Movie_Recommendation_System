@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Import Result</title>
+    <style>
+        body {
+            background: url("{{ url_for('static', filename='images/images.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Roboto', sans-serif;
+            color: #ffffff;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        .message {
+            font-size: 24px;
+            color: #00ff99;
+            margin-bottom: 30px;
+            font-weight: bold;
+            background-color: rgba(0,0,0,0.6);
+            display: inline-block;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .back-button {
+            background-color: #00ccff;
+            color: #111;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #0099cc;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="message">✅ Imported {{ count }} movies successfully!</div><br>
+    <a href="{{ url_for('movie_list') }}">
+        <button class="back-button">🎬 Back to Movie List</button>
+    </a>
+</body>
+</html>

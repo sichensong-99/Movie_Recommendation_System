@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Export Center</title>
+  <style>
+    body {
+      background: url("{{ url_for('static', filename='images/images.jpg') }}") no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+    .container {
+      background-color: rgba(0, 0, 0, 0.75);
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      color: #ffcc00;
+    }
+    .export-button {
+      display: block;
+      background-color: #00ccff;
+      color: #111;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 16px;
+      margin: 20px auto;
+      text-decoration: none;
+      width: 80%;
+    }
+    .export-button:hover {
+      background-color: #0099cc;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📤 Export Center</h1>
+
+    <a class="export-button" href="{{ url_for('export_comments_csv') }}">⬇️ Export Comments (CSV)</a>
+
+    {% if session.username == 'sia' %}
+      <a href="/admin/dashboard" class="export-button" style="background-color:#555">🔙 Back to Admin Dashboard</a>
+    {% endif %}
+  </div>
+</body>
+</html>

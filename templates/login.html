@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+    <style>
+        body {
+            background: url("{{ url_for('static', filename='images/images.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cinzel Decorative', cursive;
+            position: relative;
+            color: #ffffff;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 300px;
+            margin: 0 auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffcc00;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px; /* Increased padding for better touch experience */
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ffffff;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            transition: border-color 0.3s ease; /* Smooth transition for input border color */
+        }
+
+        input[type="submit"] {
+            background-color: #ffcc00;
+            color: #000000;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #ffe066;
+        }
+
+        input:focus {
+            border-color: #ffcc00; /* Highlight input border on focus */
+        }
+
+        p {
+            color: #ff9999;
+            margin-top: 10px;
+        }
+
+        .options {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+            color: #ffcc00;
+        }
+
+        .options a {
+            text-decoration: none;
+            color: #ffcc00;
+            transition: color 0.3s ease;
+        }
+
+        .options a:hover {
+            color: #ffe066;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Login</h1>
+    {% if error %}
+        <p>{{ error }}</p>
+        <div class="options">
+            <a href="/reset-password">Reset Password</a>
+            <a href="/register">Sign Up</a>
+        </div>
+    {% endif %}
+    <form action="/login" method="post">
+        <label for="username">Username:</label>
+        <input type="text" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+

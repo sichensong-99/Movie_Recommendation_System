@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: white;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #333;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #555;
+        }
+        th {
+            background-color: #444;
+        }
+        a {
+            color: #00ccff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 250px;
+        }
+        button {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Search Movies</h1>
+    <form method="GET" action="/search">
+        <input type="text" name="query" placeholder="Enter movie title" value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if results %}
+        <h2>Results</h2>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Year</th>
+                <th>Genres</th>
+                <th>Plot</th>
+            </tr>
+            {% for movie in results %}
+            <tr>
+                <td><a href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></td>
+                <td>{{ movie.year }}</td>
+                <td>{{ movie.genres | join(', ') }}</td>
+                <td>{{ movie.plot }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+</body>
+</html>
+

@@ -1,0 +1,26 @@
+{% for movie in movies %}
+<tr>
+    <td>{{ movie.id }}</td>
+    <td>{{ movie.title }}</td>
+    <td>{{ movie.year }}</td>
+    <td>{{ movie.genres | join(', ') }}</td>
+    <td>{{ movie.plot }}</td>
+    <td>
+        {% if movie.posterUrl %}
+            <img src="{{ movie.posterUrl }}" alt="Poster" style="max-width: 100px; max-height: 150px;">
+        {% else %}
+            N/A
+        {% endif %}
+    </td>
+    <td>
+        <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="detail-button">🎬 View Details</a>
+    </td>
+    <td>
+        <a href="/add?_id={{ movie.id }}&title={{ movie.title }}{% if username %}&username={{ username }}{% endif %}">
+            <button style="vertical-align: middle;">✍</button>
+        </a>
+    </td>
+</tr>
+{% endfor %}
+
+

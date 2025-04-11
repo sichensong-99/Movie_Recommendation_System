@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Common Styles -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/emoji.css') }}">
+    <script src="{{ url_for('static', filename='assets/twemoji.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/emoji.js') }}"></script>
+    <!-- Page-Specific Styles -->
+    <style>
+        body {
+            text-align: center;
+            background: url("{{ url_for('static', filename='images/images.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+            color: #ffffff;
+        }
+
+        header {
+            margin-top: 50px; /* Adjusted margin for better spacing */
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ffcc00; /* Yellow color for hr */
+            margin: 20px 0;
+        }
+
+        h3 {
+            color: #ffcc00; /* Yellow color for heading */
+        }
+
+        p {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navigation-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .home-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            text-decoration: none; /* Add this line */
+            transition: background-color 0.3s ease;
+            background-color: transparent;
+            color: #ffffff; /* Set the font color to white */
+        }
+
+        .home-button:hover {
+            background-color: #006699;
+        }
+
+        .navigation-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .welcome-message {
+            color: #ffffff;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .logout-link {
+            color: #ffffff;
+            font-weight: bold;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .navbar {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .navbar li {
+            margin: 0 10px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+    <!-- Additional Specific Styles -->
+    {% block specific_styles %}{% endblock %}
+</head>
+
+<body>
+    <nav>
+        <div class="navigation-left">
+            <button onclick="redirectToHome()" class="home-button">🏠 Home</button>
+            <ul class="navbar">
+                <li><a href="/list" class="a1">Movie list</a></li>
+                <li><a href="/comment" class="{{ a2 }}">Comment</a></li>
+                <li><a href="/about" class="{{ a3 }}">About me</a></li>
+            </ul>
+        </div>
+        <div class="navigation-right">
+            {% if 'username' in session %}
+                <span class="welcome-message">Welcome, {{ session['username'] }}</span>
+                <a href="/" class="logout-link">Logout</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Common Header -->
+    <header>
+        <h1>{{ title }}</h1>
+    </header>
+
+    <!-- Page Content -->
+    <div class="page-content">
+        {% block content %}{% endblock %}
+    </div>
+    <hr>
+    <h3>Created by:</h3>
+    <div class='credits'>
+        <b>Sia Song</b>
+        <p>
+            <span>Email:</span>
+            <a href="sia:ss28@fordham.edu" style="color: white;">ss28@fordham.edu</a>
+        </p>
+    </div>
+    <hr>
+    <p>Thanks for your support ❤️</p>
+    {% if 'username' in session %}
+        <script>
+            // Redirect to the dashboard page URL if logged in
+            function redirectToHome() {
+                window.location.href = "/dashboard";
+            }
+        </script>
+    {% else %}
+        <script>
+            // Redirect to the home page URL if not logged in
+            function redirectToHome() {
+                window.location.href = "/";
+            }
+        </script>
+    {% endif %}
+</body>
+
+</html>
+

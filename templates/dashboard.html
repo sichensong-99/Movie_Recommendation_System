@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ t }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/emoji.css') }}">
+    <script src="{{ url_for('static', filename='assets/twemoji.min.js') }}"></script>  
+    <script src="{{ url_for('static', filename='assets/emoji.js') }}"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Disable vertical scrolling */
+        }
+
+        body {
+            background: url("{{ url_for('static', filename='images/images.jpg') }}") no-repeat center center fixed;
+            background-size: cover; /* Adjust to cover entire viewport */
+            margin: 0;
+            padding: 0;
+            font-family: 'Cinzel Decorative', cursive; /* Use a stylish font */
+            position: relative; /* Add relative positioning for absolute child */
+        }
+
+        header {
+            text-align: center;
+            padding: 50px;
+            color: #ffffff;
+        }
+
+        nav {
+            background-color: rgba(0, 0, 0, 0.7); /* Add a semi-transparent background */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+            padding: 15px 0; /* Adjust padding for the navigation bar */
+            text-align: center; /* Center align navigation items */
+            position: fixed; /* Set the position to fixed */
+            top: 0; /* Position at the top */
+            left: 0;
+            width: 100%;
+            z-index: 100; /* Ensure the navigation bar appears above other content */
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center; /* Center align navigation items */
+        }
+
+        nav li {
+            margin-right: 20px;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.3s ease; /* Smooth color transition on hover */
+        }
+
+        nav a:hover {
+            color: #ffcc00; /* Change color on hover */
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleUp {
+            from {
+                transform: translate(-50%, -50%) scale(0);
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        @keyframes colorChange {
+            0% {
+                color: #ffcc00;
+            }
+            25% {
+                color: #00ffcc;
+            }
+            50% {
+                color: #cc00ff;
+            }
+            75% {
+                color: #ff9900;
+            }
+            100% {
+                color: #ffcc00;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="/list" class="{{ a1 }}">Movie list</a></li>
+            <li><a href="/comment" class="{{ a2 }}">Comment</a></li>
+            <li><a href="/about" class="{{ a3 }}">About me</a></li>
+    
+            <li style="position: absolute; top: 10px; right: 70px; color: #ffffff; font-weight: bold;">Welcome, {{ username }}</li>
+            <a href="/" style="position: absolute; top: 10px; right: 10px; color: #ffffff; font-weight: bold; text-decoration: none;">Logout</a>
+        </ul>
+    </nav>    
+
+   
+
+</body>
+</html>

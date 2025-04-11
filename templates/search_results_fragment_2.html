@@ -1,0 +1,15 @@
+{% for todo in todos %}
+    <tr>
+        <td>{{ todo["_id"] }}</td>
+        <td>{{ todo["title"] }}</td>
+        <td>{{ todo["year"] }}</td>
+        <td>{{ todo["runtime"] }}</td>
+        <td>{{ todo["genres"] }}</td>
+        <td>{{ todo["director"] }}</td>
+        <td>{{ todo["actors"] }}</td>
+        <td>{{ todo["plot"] }}</td>
+        <td><img src="{{ todo['poster_url'] }}" width="50"></td>
+        <td>{{ todo["comment"] }}</td>
+    </tr>
+{% endfor %}
+

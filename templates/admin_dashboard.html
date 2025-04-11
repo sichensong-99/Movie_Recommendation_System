@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            text-align: center;
+            background: url("{{ url_for('static', filename='images/images.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            color: #ffffff;
+        }
+        .logo {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 28px; 
+      font-weight: bold;
+      color: #ffcc00;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    }
+    
+        h1 {
+            margin-top: 30px;
+            color: #ffcc00;
+            font-size: 32px;
+        }
+    
+        .admin-section {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: rgba(0,0,0,0.6);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+    
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    
+        th, td {
+            padding: 14px;
+            border: 1px solid #ffffff;
+            text-align: left;
+        }
+    
+        th {
+            background-color: #333333;
+            color: #ffcc00;
+        }
+    
+        tr:nth-child(even) {
+            background-color: rgba(255,255,255,0.08);
+        }
+    
+        tr:nth-child(odd) {
+            background-color: rgba(255,255,255,0.05);
+        }
+    
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #00ccff;
+        }
+        .top-left-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 999;
+}
+
+.top-left-button button {
+    font-size: 20px;
+    font-weight: bold;
+    background-color: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.top-left-button button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffcc00;
+    border-color: #ffcc00;
+}
+.top-right-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.top-right-button button {
+    font-size: 16px;
+    font-weight: bold;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.top-right-button button:hover {
+    background-color: #0099cc;
+    color: white;
+    border-color: #0099cc;
+}
+.pagination {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .page-button {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: transparent;
+        border: 2px solid #fff;
+        border-radius: 6px;
+        color: #fff;
+        font-weight: bold;
+        margin: 0 5px;
+        text-decoration: none;
+    }
+
+    .page-button:hover {
+        background-color: #0099cc;
+        border-color: #0099cc;
+        color: #fff;
+    }
+
+    .current-page {
+        font-weight: bold;
+        color: #ffcc00;
+    }
+
+
+
+    </style>
+    
+</head>
+
+<body>
+    <div class="top-right-button">
+        <form action="{{ url_for('movie_list') }}">
+            <button type="submit">🎬 Back to Movie List</button>
+        </form>
+    </div>    
+    
+<div class="top-left-button">
+    <form action="{{ url_for('import_movies') }}" method="POST">
+      <button type="submit">📥 Import Movies from TMDB</button>
+    </form>
+  </div>
+  
+      
+    <h1>Admin Dashboard</h1>
+
+    <div class="card">
+        <h2>📊 System Overview</h2>
+        <p><strong>Total Comments:</strong> {{ comment_count }}</p>
+        <p><strong>Active Users:</strong> {{ active_users }}</p>
+    </div>
+
+    <div class="card">
+        <h2>🕓 Latest Comments</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Movie</th>
+                    <th>Comment</th>
+                    <th>Date</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in recent_comments %}
+                <tr>
+                    <td>{{ c.username }}</td>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.comment }}</td>
+                    <td>{{ c.date }}</td>
+                    <td>{{ c.rate }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>🧾 Login Logs</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Login Time (UTC)</th>
+                    <th>Logout Time (UTC)</th>
+                    <th>Session Duration</th>
+                    <th>IP</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.username }}</td>
+                    <td>{{ log.login_time.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                    <td>
+                        {% if log.logout_time %}
+                            {{ log.logout_time.strftime("%Y-%m-%d %H:%M:%S") }}
+                        {% else %}
+                            <span style="color:#ff6666;">Still Logged In</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if log.logout_time %}
+                            {% set d = log.logout_time - log.login_time %}
+                            {% set seconds = d.total_seconds() | int %}
+                            {% set hours = seconds // 3600 %}
+                            {% set minutes = (seconds % 3600) // 60 %}
+                            {% set secs = seconds % 60 %}
+                            {{ "%02d:%02d:%02d"|format(hours, minutes, secs) }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+                    <td>{{ log.ip }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>        
+    </div>    
+    
+    <div class="pagination">
+        {% if log_page > 1 %}
+            <a href="{{ url_for('admin_dashboard', page=log_page-1) }}" class="page-button">⬅ Previous</a>
+        {% endif %}
+    
+        <span class="current-page">Page {{ log_page }} of {{ log_total_pages }}</span>
+    
+        {% if log_page < log_total_pages %}
+            <a href="{{ url_for('admin_dashboard', page=log_page+1) }}" class="page-button">Next ➡</a>
+        {% endif %}
+    </div>
+    
+</body>
+</html>
+

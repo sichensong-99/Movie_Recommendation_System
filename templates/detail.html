@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ movie.title }}</title>
+    <style>
+        body {
+            background: url("{{ url_for('static', filename='images/images.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: white;
+            padding: 30px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: rgba(0,0,0,0.7);
+            padding: 25px;
+            border-radius: 12px;
+        }
+        img {
+            float: right;
+            max-width: 200px;
+            margin-left: 20px;
+        }
+        h1, h2, h3 {
+            color: #ffcc00;
+        }
+        .comment-box {
+            background: #222;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+        }
+        .comment-box p {
+            margin: 4px 0;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #00ccff;
+            color: #111;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .back-button:hover {
+            background-color: #0099cc;
+            color: white;
+        }
+        textarea, input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: none;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #00ccff;
+            color: #111;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0099cc;
+            color: white;
+        }
+        .pagination {
+            margin: 10px 0;
+            text-align: center;
+        }
+        .pagination a {
+            color: #00ccff;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin: 0 5px;
+            background: #111;
+        }
+        .pagination a:hover {
+            background: #00ccff;
+            color: black;
+        }
+        .pagination span {
+            padding: 6px 10px;
+            color: #ffcc00;
+        }
+        .poster-small {
+            width: 100px;
+            border-radius: 6px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+      
+    <h1>{{ movie.title }} ({{ movie.release_date[:4] }})</h1>
+    <a href="{{ url_for('export_movie_detail_csv', movie_id=movie.id) }}">
+        <button style="margin-left: 20px; padding: 6px 12px;">⬇️ Download Info</button>
+    </a>
+    
+    {% if movie.poster_path %}
+        <img src="https://image.tmdb.org/t/p/w300{{ movie.poster_path }}" alt="Poster">
+    {% endif %}
+    <p><strong>Runtime:</strong> {{ movie.runtime }} min</p>
+    <p><strong>Genres:</strong> {{ genres | join(', ') }}</p>
+    <p><strong>Director:</strong> {{ director }}</p>
+    <p><strong>Actors:</strong> {{ actors }}</p>
+    <p><strong>Overview:</strong> {{ movie.overview }}</p>
+
+    <h2>🎭 Cast</h2>
+    <ul>
+        {% for actor in credits.cast[:10] %}
+            <li>{{ actor.name }} as {{ actor.character }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>🎬 Crew</h3>
+    <ul>
+        {% for crew in credits.crew[:5] %}
+            <li>{{ crew.name }} - {{ crew.job }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>🎬 Recommended Movies</h2>
+    {% if recommendations %}
+        <ul>
+            {% for rec in recommendations[:6] %}
+                <li>
+                    <strong>{{ rec.title }}</strong>
+                    {% if rec.release_date %} ({{ rec.release_date[:4] }}) {% endif %}
+                    {% if rec.poster_path %}
+                        <br><img src="https://image.tmdb.org/t/p/w200{{ rec.poster_path }}" class="poster-small">
+                    {% endif %}
+                    <p>{{ rec.overview[:200] }}...</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No recommendations available from TMDb.</p>
+    {% endif %}
+
+    <h2>🌍 TMDb Reviews</h2>
+    {% if reviews %}
+        {% for r in reviews %}
+            <div class="comment-box">
+                <p><strong>{{ r.author }}</strong> said:</p>
+                <p>{{ r.content[:500] }}{% if r.content|length > 500 %}...{% endif %}</p>
+            </div>
+        {% endfor %}
+        <div class="pagination">
+            {% if tmdb_page > 1 %}
+                <a href="{{ url_for('movie_detail', movie_id=movie.id, tmdb_page=tmdb_page-1, local_page=local_page) }}">⬅ Prev</a>
+            {% endif %}
+            <span>Page {{ tmdb_page }} of {{ total_tmdb_pages }}</span>
+            {% if tmdb_page < total_tmdb_pages %}
+                <a href="{{ url_for('movie_detail', movie_id=movie.id, tmdb_page=tmdb_page+1, local_page=local_page) }}">Next ➡</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No reviews from TMDb.</p>
+    {% endif %}
+
+    <h2>📝 Local Comments</h2>
+    {% if local_comments %}
+        {% for c in local_comments %}
+            <div class="comment-box">
+                <p><strong>{{ c.username }}</strong> ({{ c.date }})</p>
+                <p>{{ c.comment }}</p>
+                <p>⭐ Rating: {{ c.rate }}</p>
+            </div>
+        {% endfor %}
+        <div class="pagination">
+            {% if local_page > 1 %}
+                <a href="{{ url_for('movie_detail', movie_id=movie.id, local_page=local_page-1, tmdb_page=tmdb_page) }}">⬅ Prev</a>
+            {% endif %}
+            <span>Page {{ local_page }} of {{ total_local_pages }}</span>
+            {% if local_page < total_local_pages %}
+                <a href="{{ url_for('movie_detail', movie_id=movie.id, local_page=local_page+1, tmdb_page=tmdb_page) }}">Next ➡</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No local comments yet.</p>
+    {% endif %}
+
+    <br><a href="/list" class="back-button">← Back to list</a>
+</div>
+</body>
+</html>
+
+
+
+
