@@ -260,16 +260,16 @@
      <table border="1" id="movieTable">
         <thead>
             <tr>
-                <th title="Unique ID of the movie in the database">ID</th>
-                <th title="Movie title">Title</th>
-                <th title="Year of release">Year</th>
-                <th title="Genres associated with the movie, e.g., Action, Comedy">Genres</th>
-                <th title="Brief plot summary">Plot</th>
-                <th title="Link to the movie's poster image">Poster URL</th>
-                <th title="Click to view detailed movie information">Details</th>
-                <th title="Click to leave a comment for the movie">Comment</th>
+                <th>ID</th>
+                <th>Title <span title="The movie's name.">❓</span></th>
+                <th>Year <span title="Year the movie was released.">❓</span></th>
+                <th>Genres <span title="Movie categories like Action, Comedy, etc.">❓</span></th>
+                <th>Plot <span title="A short description of the movie.">❓</span></th>
+                <th>Poster URL <span title="Image of the movie pulled from TMDb.">❓</span></th>
+                <th>Details <span title="View full details of the movie.">❓</span></th>
+                <th>Comment <span title="Leave your review or rating here.">❓</span></th>
             </tr>
-        </thead>        
+        </thead>           
          <tbody>
              {% for movie in movies %}
              <tr>
