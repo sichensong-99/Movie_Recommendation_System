@@ -384,15 +384,8 @@
      xhr.open("GET", `/search-json?refer=${refer}&key=${key}&page=${page}`, true);
      xhr.send();
  }
- document.addEventListener("DOMContentLoaded", function () {
-    tippy('[data-tippy-content]', {
-      theme: 'light',
-      animation: 'scale',
-      delay: [100, 50],
-    });
-  });
      </script>
-
+  
  </body>
  <div id="searchStats" style="margin-top: 20px; color: #ffffff; font-weight: bold;"></div>
  
@@ -411,4 +404,14 @@
  </div>
  
  <div id="searchPagination" class="pagination"></div>
+ <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      tippy('[data-tippy-content]', {
+        theme: 'light',
+        animation: 'scale',
+        delay: [100, 50],
+        placement: 'top',
+      });
+    });
+  </script>  
  </html>
