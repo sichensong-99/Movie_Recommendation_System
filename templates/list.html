@@ -249,25 +249,27 @@
      <div class="page-content">
      </div>
  
-     <div style="text-align: left;">
-         <b><big>Search By</big></b>
-         <select id="searchRefer" required onchange="updateSearchInput()">
-             <option value="tmdb_id">TMDb ID</option>
-             <option value="title">Title</option>
-             <option value="year">Year</option>
-             <option value="genres">Genres</option>
-         </select>
-         <span id="searchInputContainer">
-             <input type="text" id="searchKey" placeholder="Search Movie" size="15" />
-         </span>
-         <button onclick="performSearch()">Search</button>
-     </div>
-     <div style="text-align: right; margin: 10px 30px;">
-         <a href="{{ url_for('export_current_page_csv', page=current_page) }}">
-             <button style="padding: 8px 16px;">⬇️ Export This Page</button>
-         </a>
-     </div>
-     <table border="1" id="movieTable">
+    <div style="text-align: left;" data-tippy-content="Use this section to search movies by title, year, genre, or TMDb ID.">
+        <b><big>Search By</big></b>
+        <select id="searchRefer" required onchange="updateSearchInput()">
+            <option value="tmdb_id">TMDb ID</option>
+            <option value="title">Title</option>
+            <option value="year">Year</option>
+            <option value="genres">Genres</option>
+        </select>
+        <span id="searchInputContainer">
+            <input type="text" id="searchKey" placeholder="Search Movie" size="15" />
+        </span>
+        <button onclick="performSearch()">Search</button>
+    </div>
+    
+    <div style="text-align: right; margin: 10px 30px;" data-tippy-content="Download a CSV of movies listed on this page.">
+        <a href="{{ url_for('export_current_page_csv', page=current_page) }}">
+            <button style="padding: 8px 16px;">⬇️ Export This Page</button>
+        </a>
+    </div>
+    
+    <table border="1" id="movieTable" data-tippy-content="This table shows all movies on the current page. You can view details or leave comments.">
         <thead>
             <tr>
                 <th data-tippy-content="The TMDb movie ID used for searching or referencing.">ID</th>
