@@ -326,6 +326,43 @@ def get_current_username():
 #	if(str(redir)=="http://localhost:5000/search"):
 #		redir+="?key="+id+"&refer="+refer
 
+@app.route("/comment-search-json", methods=["GET"])
+def comment_search_json():
+    refer = request.args.get("refer", "").lower()
+    key = request.args.get("key", "").strip()
+
+    field_map = {
+        "name": "name",
+        "username": "username",
+        "rate": "rate",
+        "date": "date"
+    }
+
+    field = field_map.get(refer)
+    query = {}
+
+    if field and key:
+        query = {field: {"$regex": re.escape(key), "$options": "i"}}
+
+    results = list(todos.find(query))
+
+    html = ""
+    for todo in results:
+        html += f"""
+        <tr class="datas">
+            <td class="name">{todo.get("username", "")}</td>
+            <td class="name">{todo.get("name", "")}</td>
+            <td class="desc">{todo.get("comment", "")}</td>
+            <td class="date">{todo.get("date", "")}</td>
+            <td class="pr">{todo.get("rate", "")}</td>
+            <td class="func1"><a href="./remove?_id={todo.get('_id')}">🗑️</a></td>
+            <td class="func2"><a href="/update/{todo.get('_id')}">📝</a></td>
+        </tr>
+        """
+
+    return jsonify({"html": html})
+
+
 @app.route("/add")
 def add():
     username = get_current_username()
