@@ -125,15 +125,17 @@
     </header>
     <form action="{{ url_for('action') }}{% if username %}?username={{ username }}{% endif %}" method="post">
         <input type="hidden" name="username" value="{{ username }}">
+        <input type="hidden" name="movie_id" value="{{ movie_id }}">  
+    
         <label for="name">Movie Name:</label>
-        <input type="text" name="name" required><br>
-
+        <input type="text" name="name" value="{{ movie_title }}" required><br>
+    
         <label for="comment">Comment:</label>
         <textarea name="comment" required></textarea><br>
-
+    
         <label for="date">Date:</label>
         <input type="date" name="date" required><br>
-
+    
         <label for="rate">Rate:</label>
         <select name="rate" required>
             <option value="Excellent">Excellent</option>
@@ -145,6 +147,7 @@
         </select><br>
         <input type="submit" value="Submit Comment">
     </form>
+    
 </body>
 </html>
 

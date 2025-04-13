@@ -330,16 +330,20 @@ def get_current_username():
 def add():
     username = get_current_username()
 
-    # Check if the user is not logged in
     if username is None:
-        # Redirect to the login page
         return redirect(url_for('login'))
 
-    # Render the add.html template with the username
-    return render_template('add.html', username=username, h=heading, t=title)
-def get_current_username():
-    # Assuming you store the username in the session during login
-    return session.get('username')
+    movie_id = request.args.get("_id")         
+    movie_title = request.args.get("title")    
+
+    return render_template(
+        'add.html',
+        username=username,
+        h=heading,
+        t=title,
+        movie_id=movie_id,
+        movie_title=movie_title
+    )
 
 @app.route("/search")
 def search():
