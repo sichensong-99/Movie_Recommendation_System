@@ -187,7 +187,27 @@
     {% else %}
         <p>No local comments yet.</p>
     {% endif %}
-
+    <h2>Submit a Comment</h2>
+    <form method="POST" action="/action">
+      <!-- Hidden input for movie_id -->
+      <input type="hidden" name="movie_id" value="{{ movie.id }}">
+      
+      <!-- Name input -->
+      <input type="text" name="name" placeholder="Your name" required>
+      
+      <!-- Comment textarea -->
+      <textarea name="comment" placeholder="Your comment" required></textarea>
+      
+      <!-- Date input -->
+      <input type="date" name="date" required>
+      
+      <!-- Rating input -->
+      <label for="rate">Rating:</label>
+      <input type="number" name="rate" min="1" max="10" required>
+      
+      <button type="submit">Submit Comment</button>
+    </form>
+    
     <br><a href="/list" class="back-button">← Back to list</a>
 </div>
 </body>
