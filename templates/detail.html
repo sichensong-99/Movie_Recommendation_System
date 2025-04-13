@@ -187,7 +187,24 @@
     {% else %}
         <p>No local comments yet.</p>
     {% endif %}
-    
+    <h2>➕ Add Your Comment</h2>
+    <form action="{{ url_for('action') }}" method="post">
+        <input type="hidden" name="movie_id" value="{{ movie.id }}">
+        
+        <label for="name">Your Name:</label>
+        <input type="text" name="name" required>
+
+        <label for="comment">Comment:</label>
+        <textarea name="comment" rows="4" required></textarea>
+
+        <label for="rate">Rating (1-10):</label>
+        <input type="number" name="rate" min="1" max="10" required>
+
+        <label for="date">Date:</label>
+        <input type="date" name="date" required>
+
+        <button type="submit">Submit Comment</button>
+    </form>
     <br><a href="/list" class="back-button">← Back to list</a>
 </div>
 </body>
