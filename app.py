@@ -326,10 +326,12 @@ def get_current_username():
 #	if(str(redir)=="http://localhost:5000/search"):
 #		redir+="?key="+id+"&refer="+refer
 
+
 @app.route("/comment-search-json", methods=["GET"])
 def comment_search_json():
     refer = request.args.get("refer", "").lower()
     key = request.args.get("key", "").strip()
+    username = session.get("username")
 
     field_map = {
         "name": "name",
@@ -346,20 +348,29 @@ def comment_search_json():
 
     results = list(todos.find(query))
 
-    html = ""
-    for todo in results:
-        html += f"""
-        <tr class="datas">
-            <td class="name">{todo.get("username", "")}</td>
-            <td class="name">{todo.get("name", "")}</td>
-            <td class="desc">{todo.get("comment", "")}</td>
-            <td class="date">{todo.get("date", "")}</td>
-            <td class="pr">{todo.get("rate", "")}</td>
-            <td class="func1"><a href="./remove?_id={todo.get('_id')}">🗑️</a></td>
-            <td class="func2"><a href="/update/{todo.get('_id')}">📝</a></td>
-        </tr>
-        """
+    row_template = """
+    {% for todo in results %}
+    <tr class="datas">
+        <td class="name">{{ todo.username }}</td>
+        <td class="name">{{ todo.name }}</td>
+        <td class="desc">{{ todo.comment }}</td>
+        <td class="date">{{ todo.date }}</td>
+        <td class="pr">{{ todo.rate }}</td>
+        <td class="func1">
+            {% if username == todo.username %}
+                <a href="./remove?_id={{ todo._id }}">🗑️</a>
+            {% endif %}
+        </td>
+        <td class="func2">
+            {% if username == todo.username %}
+                <a href="/update/{{ todo._id }}">📝</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    """
 
+    html = render_template_string(row_template, results=results, username=username)
     return jsonify({"html": html})
 
 
