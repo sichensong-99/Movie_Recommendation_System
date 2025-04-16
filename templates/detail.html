@@ -100,7 +100,7 @@
 <div class="container">
       
     <h1>{{ movie.title }} ({{ movie.release_date[:4] }})</h1>
-    <a href="{{ url_for('export_movie_detail_csv', movie_id=movie.id) }}">
+    <a href="{{ url_for('export_movie_detail_csv', movie_id=movie['id']) }}">
         <button style="margin-left: 20px; padding: 6px 12px;">⬇️ Download Info</button>
     </a>
     
@@ -155,11 +155,11 @@
         {% endfor %}
         <div class="pagination">
             {% if tmdb_page > 1 %}
-                <a href="{{ url_for('movie_detail', movie_id=movie.id, tmdb_page=tmdb_page-1, local_page=local_page) }}">⬅ Prev</a>
+                <a href="{{ url_for('movie_detail', movie_id=movie['id'], tmdb_page=tmdb_page-1, local_page=local_page) }}">⬅ Prev</a>
             {% endif %}
             <span>Page {{ tmdb_page }} of {{ total_tmdb_pages }}</span>
             {% if tmdb_page < total_tmdb_pages %}
-                <a href="{{ url_for('movie_detail', movie_id=movie.id, tmdb_page=tmdb_page+1, local_page=local_page) }}">Next ➡</a>
+                <a href="{{ url_for('movie_detail', movie_id=movie['id'], tmdb_page=tmdb_page+1, local_page=local_page) }}">Next ➡</a>
             {% endif %}
         </div>
     {% else %}
@@ -177,17 +177,16 @@
         {% endfor %}
         <div class="pagination">
             {% if local_page > 1 %}
-                <a href="{{ url_for('movie_detail', movie_id=movie.id, local_page=local_page-1, tmdb_page=tmdb_page) }}">⬅ Prev</a>
+                <a href="{{ url_for('movie_detail', movie_id=movie['id'], local_page=local_page-1, tmdb_page=tmdb_page) }}">⬅ Prev</a>
             {% endif %}
             <span>Page {{ local_page }} of {{ total_local_pages }}</span>
             {% if local_page < total_local_pages %}
-                <a href="{{ url_for('movie_detail', movie_id=movie.id, local_page=local_page+1, tmdb_page=tmdb_page) }}">Next ➡</a>
+                <a href="{{ url_for('movie_detail', movie_id=movie['id'], local_page=local_page+1, tmdb_page=tmdb_page) }}">Next ➡</a>
             {% endif %}
         </div>
     {% else %}
         <p>No local comments yet.</p>
     {% endif %}
-
     <br><a href="/list" class="back-button">← Back to list</a>
 </div>
 </body>
