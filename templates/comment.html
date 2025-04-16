@@ -177,7 +177,7 @@
         </div>
     {% endif %}
     <hr>
-    {% if todos[0] %}
+    {% if todos|length > 0 %}
     <div style="text-align: left;">
         <b><big>Search By</big></b>
         <select id="searchRefer" required onchange="updateSearchInput()">
@@ -194,35 +194,39 @@
     <div id="searchResultsContainer"></div>
 
     <table id="commentTable">
-        <tr id="row">
-            <th class="name">Username</th>
-            <th class="name">Movie Name</th>
-            <th class="desc">Comment</th>
-            <th class="date">Date</th>
-            <th class="pr">Rate</th>
-            <th class="func1">Remove</th>
-            <th class="func2">Modify</th>
-        </tr>
-        {% for todo in todos %}
-        <tr class="datas">
-            <td class="name">{{ todo["username"] }}</td>
-            <td class="name">{{ todo["name"] }}</td>
-            <td class="desc">{{ todo["comment"] }}</td>
-            <td class="date">{{ todo["date"] }}</td>
-            <td class="pr">{{ todo["rate"] }}</td>
-            <td class="func1">
-                {% if session.get('username') == todo.get('username') %}
-                    <a href="./remove?_id={{ todo['_id'] }}">🗑️</a>
-                {% endif %}
-            </td>
-            <td class="func2">
-                {% if session.get('username') == todo.get('username') %}
-                    <a href="{{ url_for('update', comment_id=todo['_id']) }}">📝</a>
-                {% endif %}
-            </td>
-        </tr>
-{% endfor %}
-    </table>
+        <thead>
+            <tr id="row">
+                <th class="name">Username</th>
+                <th class="name">Movie Name</th>
+                <th class="desc">Comment</th>
+                <th class="date">Date</th>
+                <th class="pr">Rate</th>
+                <th class="func1">Remove</th>
+                <th class="func2">Modify</th>
+            </tr>
+        </thead>
+        <tbody id="commentBody">
+            {% for todo in todos %}
+            <tr class="datas">
+                <td class="name">{{ todo.get("username") }}</td>
+                <td class="name">{{ todo.get("name") }}</td>
+                <td class="desc">{{ todo.get("comment") }}</td>
+                <td class="date">{{ todo.get("date") }}</td>
+                <td class="pr">{{ todo.get("rate") }}</td>
+                <td class="func1">
+                    {% if session.get('username') == todo.get('username') %}
+                        <a href="./remove?_id={{ todo['_id'] }}">🗑️</a>
+                    {% endif %}
+                </td>
+                <td class="func2">
+                    {% if session.get('username') == todo.get('username') %}
+                        <a href="{{ url_for('update', comment_id=todo['_id']) }}">📝</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>    
     <script>
         function updateSearchInput() {
             var searchRefer = document.getElementById("searchRefer").value;
@@ -271,9 +275,8 @@
                     // Parse the response JSON
                     var response = JSON.parse(xhr.responseText);
     
-                    // Update the existing table with the search results
-                    var tableContainer = document.getElementById("commentTable");
-                    tableContainer.innerHTML = response.html;
+                    var tableBody = document.getElementById("commentBody");
+tableBody.innerHTML = response.html;
     
                     // Check if the table header is present, if not, add it
                     if (!tableContainer.querySelector("#row")) {
