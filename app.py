@@ -326,7 +326,6 @@ def get_current_username():
 #	if(str(redir)=="http://localhost:5000/search"):
 #		redir+="?key="+id+"&refer="+refer
 
-
 @app.route("/comment-search-json", methods=["GET"])
 def comment_search_json():
     refer = request.args.get("refer", "").lower()
@@ -372,7 +371,6 @@ def comment_search_json():
 
     html = render_template_string(row_template, results=results, username=username)
     return jsonify({"html": html})
-
 
 @app.route("/add")
 def add():
