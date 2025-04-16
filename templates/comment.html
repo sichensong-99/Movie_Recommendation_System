@@ -215,14 +215,14 @@
                 <td class="pr">{{ todo.get("rate") }}</td>
                 <td class="func1">
                     {% if session.get('username') == todo.get('username') %}
-                        <a href="./remove?_id={{ todo['_id'] }}">🗑️</a>
+                        <a href="{{ url_for('remove') }}?_id={{ todo['_id'] }}">🗑️</a>
                     {% endif %}
-                </td>
+                </td>                
                 <td class="func2">
                     {% if session.get('username') == todo.get('username') %}
                         <a href="{{ url_for('update', comment_id=todo['_id']) }}">📝</a>
                     {% endif %}
-                </td>
+                </td>                
             </tr>
             {% endfor %}
         </tbody>
