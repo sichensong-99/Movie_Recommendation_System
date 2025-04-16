@@ -342,12 +342,9 @@ def comment_search_json():
         "rate": "rate",
         "date": "date"
     }
-
-    field = field_map.get(refer)
     query = {}
-
-    if field and key:
-        query = {field: {"$regex": re.escape(key), "$options": "i"}}
+    if field_map.get(refer) and key:
+        query[field_map[refer]] = {"$regex": re.escape(key), "$options": "i"}
 
     results = list(todos.find(query))
 
@@ -361,7 +358,7 @@ def comment_search_json():
         <td class="pr">{{ todo.rate }}</td>
         <td class="func1">
             {% if username == todo.username %}
-                <a href="./remove?_id={{ todo._id }}">🗑️</a>
+                <a href="/remove?_id={{ todo._id }}">🗑️</a>
             {% endif %}
         </td>
         <td class="func2">
