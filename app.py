@@ -316,15 +316,19 @@ def movie_detail(movie_id):
 @app.route("/comment")
 def movies_lists():
     # Display all Tasks
-    todos_l = todos.find()
+    todos_l = list(todos.find())   
     username = get_current_username()
     a1 = "active"
-    return render_template('comment.html', a1=a1, todos=todos_l, username=username,t=title, h=heading)
+    return render_template(
+        'comment.html',
+        a1=a1,
+        todos=todos_l,
+        username=username,
+        t=title,
+        h=heading
+    )
 def get_current_username():
-    # Assuming you store the username in the session during login
     return session.get('username')
-#	if(str(redir)=="http://localhost:5000/search"):
-#		redir+="?key="+id+"&refer="+refer
 
 @app.route("/comment-search-json", methods=["GET"])
 def comment_search_json():
