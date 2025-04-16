@@ -317,12 +317,10 @@ def movie_detail(movie_id):
 def movies_lists():
     todos_l = list(todos.find())  
     username = session.get("username")  
-    a2 = "active"  
     return render_template(
         "comment.html",
         todos=todos_l,
         username=username,
-        a2=a2,  
         t=title,
         h=heading
     )
