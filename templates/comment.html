@@ -222,7 +222,7 @@
                     {% if username == todo.get('username') %}
                         <a href="{{ url_for('update', comment_id=todo['_id']) }}">📝</a>
                     {% endif %}
-                </td>                                
+                </td>                                                
             </tr>
             {% endfor %}
         </tbody>
