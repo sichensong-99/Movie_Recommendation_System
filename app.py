@@ -365,52 +365,46 @@ def search():
 
 @app.route("/remove")
 def remove():
-    # Deleting a Task with various references
     key = request.values.get("_id")
+    comment = todos.find_one({"_id": ObjectId(key)})
 
-    # Delete the comment from the 'todos' collection
+    if not comment:
+        return "❌ Comment not found", 404
+
+    if "username" not in session or session["username"] != comment.get("username"):
+        return "❌ You are not authorized to delete this comment", 403
+
     todos.delete_one({"_id": ObjectId(key)})
-
-    # Delete the comment from the 'movies_collection' collection
-    movies_collection.delete_one({"_id": ObjectId(key)})
-
-    # Flash a success message
     flash("Comment removed successfully!", "success")
-
-    # Redirect to the referring page (or the home page if no referrer is present)
     return redirect(request.referrer or "/")
+
 
 @app.route("/update/<comment_id>", methods=["GET", "POST"])
 def update(comment_id):
+    comment_data = todos.find_one({"_id": ObjectId(comment_id)})
+
+    if not comment_data:
+        return "❌ Comment not found", 404
+
+    if "username" not in session or session["username"] != comment_data.get("username"):
+        return "❌ You are not authorized to edit this comment", 403
+
     if request.method == "POST":
-        # Retrieve the updated data from the form
         updated_name = request.form.get("name")
         updated_comment = request.form.get("comment")
         updated_date = request.form.get("date")
         updated_rate = request.form.get("rate")
 
-        # Update the comment in the database
         todos.update_one({"_id": ObjectId(comment_id)}, {"$set": {
             "name": updated_name,
             "comment": updated_comment,
             "date": updated_date,
             "rate": updated_rate
         }})
-
-        # Redirect to comment.html after updating
         return redirect(url_for('movies_lists'))
-    else:
-        # Retrieve the existing comment data
-        comment_data = todos.find_one({"_id": ObjectId(comment_id)})
 
-        # Check if the user is logged in
-        if "username" in session:
-            username = session["username"]
-        else:
-            username = None
+    return render_template('update.html', comment=comment_data, username=session["username"], title="Update Comment", a1="active")
 
-        # Pass the comment data and username to the update.html template
-        return render_template('update.html', comment=comment_data, username=username, title="Update Comment", a1="active")
 
 @app.route("/about")
 def about():
