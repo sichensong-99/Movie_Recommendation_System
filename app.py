@@ -315,26 +315,26 @@ def movie_detail(movie_id):
 
 @app.route("/comment")
 def movies_lists():
-    # Display all Tasks
-    todos_l = list(todos.find())   
-    username = get_current_username()
-    a1 = "active"
+    todos_l = list(todos.find())  
+    username = session.get("username")  
+    a2 = "active"  
     return render_template(
-        'comment.html',
-        a1=a1,
+        "comment.html",
         todos=todos_l,
         username=username,
+        a2=a2,  
         t=title,
         h=heading
     )
+
 def get_current_username():
-    return session.get('username')
+    return session.get("username")
 
 @app.route("/comment-search-json", methods=["GET"])
 def comment_search_json():
     refer = request.args.get("refer", "").lower()
     key = request.args.get("key", "").strip()
-    username = session.get("username")
+    username = session.get("username") 
 
     field_map = {
         "name": "name",
@@ -342,12 +342,11 @@ def comment_search_json():
         "rate": "rate",
         "date": "date"
     }
+
     query = {}
     if field_map.get(refer) and key:
         query[field_map[refer]] = {"$regex": re.escape(key), "$options": "i"}
-
     results = list(todos.find(query))
-
     row_template = """
     {% for todo in results %}
     <tr class="datas">
