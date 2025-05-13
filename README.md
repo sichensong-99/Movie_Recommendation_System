@@ -52,3 +52,7 @@
   export FLASK_APP=app.py
   export FLASK_ENV=development
 </pre>
+4. Run the app
+<pre>
+  python app.py
+</pre>
