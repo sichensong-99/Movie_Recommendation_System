@@ -77,3 +77,7 @@ To enable admin dashboard access, manually set a user as admin in MongoDB:
   "is_admin": true
 }
 </pre>
+## ✨ Acknowledgements
+- TMDb for movie data
+
+- Flask, PyMongo, ReportLab for PDF/CSV export
