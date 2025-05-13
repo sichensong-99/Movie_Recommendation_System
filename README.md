@@ -17,8 +17,6 @@
 
 - 🔍 Search movies by title, genre, year, or TMDb ID
 
-![Admin Dashboard Screenshot](pics/search.jpg)
-
 - 📥 Export data as CSV or JSON:
 
   - Movie list
@@ -28,8 +26,6 @@
   - User comments
 
   - Registered users (JSON only)
-
-  ![Admin Dashboard Screenshot](pics/export.jpg)
 
 - 📈 Admin dashboard with login logs and comment activity
 
