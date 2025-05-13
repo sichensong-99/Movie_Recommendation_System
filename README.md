@@ -24,6 +24,8 @@
 The admin panel provides an overview of login history, active users, recent comments, and login logs — all with pagination support
 
 ![Admin Dashboard Screenshot](pics/Admin_dashboard_1.jpg)
+![Admin Dashboard Screenshot](pics/Admin_dashboard_2.jpg)
+
 
 
 - 🎓 User login, registration, password reset
