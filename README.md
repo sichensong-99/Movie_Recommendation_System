@@ -59,9 +59,12 @@
 Visit http://127.0.0.1:5000 in your browser.
 ## 📦 File Structure Overview
 <pre>
-  ├── app.py                 # Main Flask application
+├── app.py                 # Main Flask application
 ├── templates/             # HTML templates (Jinja2)
 ├── static/                # CSS, JS, images
 ├── requirements.txt       # Python dependencies
 ├── README.md              # Project documentation
 </pre>
+## 🚀 TMDb API Key
+This app uses the TMDb API. Make sure you set your own API key in the code:
+```api_key = "your_api_key_here"```
