@@ -9,22 +9,22 @@ You can check out the live site here 👉 [movie-recommendation-system-s.onrende
 </p>
 
 ## 🏠 Feature
-- 🎥 View popular movies (fetched from TMDb)
+- 🎥 **View popular movies (fetched from TMDb)**
 
-- 🔤 Movie detail pages with plot, cast, director, and reviews
+- 🔤 **Movie detail pages with plot, cast, director, and reviews**
 
 ![Admin Dashboard Screenshot](pics/move_details_1.jpg)
 ![Admin Dashboard Screenshot](pics/move_details_2.jpg)
 ![Admin Dashboard Screenshot](pics/move_details_3.jpg)
 
-- ✍️ Add personal reviews and ratings (authenticated users only)
+- ✍️ **Add personal reviews and ratings (authenticated users only)**
 
 ![Admin Dashboard Screenshot](pics/add_comment.jpg)
 
-- 🔍 Search movies by title, genre, year, or TMDb ID
+- 🔍 **Search movies by title, genre, year, or TMDb ID**
 
-- 📥 Export data as CSV or JSON:
-
+- 📥 **Export data as CSV or JSON:**
+  
   - Movie list
 
   - Movie detail (with local & TMDb reviews)
@@ -33,22 +33,22 @@ You can check out the live site here 👉 [movie-recommendation-system-s.onrende
 
   - Registered users (JSON only)
 
-- 📈 Admin dashboard with login logs and comment activity
+- 📈 **Admin dashboard with login logs and comment activity**
 
 The admin panel provides an overview of login history, active users, recent comments, and login logs — all with pagination support
 
 ![Admin Dashboard Screenshot](pics/Admin_dashboard_1.jpg)
 ![Admin Dashboard Screenshot](pics/Admin_dashboard_2.jpg)
 
-- 🎓 User login, registration, password reset
+- 🎓 **User login, registration, password reset**
 
 ![Admin Dashboard Screenshot](pics/login.jpg)
 
-- 📊 Comment search and in-place management
+- 📊 **Comment search and in-place management**
 
 ![Admin Dashboard Screenshot](pics/permission_control.jpg)
 
-- 📚 Caching for TMDb data with scheduled re-import
+- 📚 **Caching for TMDb data with scheduled re-import**
 
 ![Admin Dashboard Screenshot](pics/import.jpg)
 ## 📚 Tech Stack
