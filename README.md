@@ -22,6 +22,7 @@ You can check out the live site here 👉 [movie-recommendation-system-s.onrende
 - ✍️ **Add personal reviews and ratings (authenticated users only)**
 
 ![Admin Dashboard Screenshot](pics/add_comment.jpg)
+
 <br>
 
 - 🔍 **Search movies by title, genre, year, or TMDb ID**
@@ -43,17 +44,26 @@ The admin panel provides an overview of login history, active users, recent comm
 ![Admin Dashboard Screenshot](pics/Admin_dashboard_1.jpg)
 ![Admin Dashboard Screenshot](pics/Admin_dashboard_2.jpg)
 
+<br>
+
 - 🎓 **User login, registration, password reset**
 
 ![Admin Dashboard Screenshot](pics/login.jpg)
+
+<br>
 
 - 📊 **Comment search and in-place management**
 
 ![Admin Dashboard Screenshot](pics/permission_control.jpg)
 
+<br>
+
 - 📚 **Caching for TMDb data with scheduled re-import**
 
 ![Admin Dashboard Screenshot](pics/import.jpg)
+
+<br>
+
 ## 📚 Tech Stack
 - Backend: Python, Flask
 
