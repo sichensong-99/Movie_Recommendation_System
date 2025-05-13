@@ -11,7 +11,7 @@
 
 📥 Export data as CSV or JSON:
 
-a. Movie list
+ Movie list
 
 b. Movie detail (with local & TMDb reviews)
 
