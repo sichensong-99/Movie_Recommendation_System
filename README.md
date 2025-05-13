@@ -26,4 +26,17 @@
 - 📊 Comment search and in-place management
 
 - 📚 Caching for TMDb data with scheduled re-import
+## 📚 Tech Stack
+- Backend: Python, Flask
 
+- Frontend: Jinja2 Templates, HTML/CSS, JavaScript
+
+- Database: MongoDB
+
+- External API: TMDb API
+
+- Security: Flask-Bcrypt, hashed passwords, session control
+## 🔧 Setup Instructions
+1. Clone the repo
+git clone https://github.com/your-username/movie-rating-app.git
+cd movie-rating-app
