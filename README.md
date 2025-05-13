@@ -56,3 +56,4 @@
 <pre>
   python app.py
 </pre>
+Visit <pre>http://127.0.0.1:5000</pre> in your browser.
