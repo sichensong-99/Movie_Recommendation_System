@@ -16,10 +16,12 @@ You can check out the live site here 👉 [movie-recommendation-system-s.onrende
 ![Admin Dashboard Screenshot](pics/move_details_1.jpg)
 ![Admin Dashboard Screenshot](pics/move_details_2.jpg)
 ![Admin Dashboard Screenshot](pics/move_details_3.jpg)
+<br>
 
 - ✍️ **Add personal reviews and ratings (authenticated users only)**
 
 ![Admin Dashboard Screenshot](pics/add_comment.jpg)
+<br>
 
 - 🔍 **Search movies by title, genre, year, or TMDb ID**
 
