@@ -48,7 +48,7 @@
 </pre>
 3. Set environment variables
 <pre>
-export MONGO_URI='your_mongodb_connection_string'
-export FLASK_APP=app.py
-export FLASK_ENV=development
+  export MONGO_URI='your_mongodb_connection_string'
+  export FLASK_APP=app.py
+  export FLASK_ENV=development
 </pre>
