@@ -38,6 +38,8 @@
 - Security: Flask-Bcrypt, hashed passwords, session control
 ## 🔧 Setup Instructions
 1. Clone the repo
-<pre> ```git clone https://github.com/your-username/movie-rating-app.git
-cd movie-rating-app ``` </pre>
+<pre> ```
+  git clone https://github.com/your-username/movie-rating-app.git
+  cd movie-rating-app 
+  ``` </pre>
 
