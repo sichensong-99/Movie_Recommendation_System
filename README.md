@@ -3,11 +3,21 @@
 ## 🏠 Feature
 - 🎥 View popular movies (fetched from TMDb)
 
+![Admin Dashboard Screenshot](pics/view_movies.jpg)
+
 - 🔤 Movie detail pages with plot, cast, director, and reviews
+
+![Admin Dashboard Screenshot](pics/move_details_1.jpg)
+![Admin Dashboard Screenshot](pics/move_details_2.jpg)
+![Admin Dashboard Screenshot](pics/move_details_3.jpg)
 
 - ✍️ Add personal reviews and ratings (authenticated users only)
 
+![Admin Dashboard Screenshot](pics/add_comment.jpg)
+
 - 🔍 Search movies by title, genre, year, or TMDb ID
+
+![Admin Dashboard Screenshot](pics/search.jpg)
 
 - 📥 Export data as CSV or JSON:
 
@@ -19,6 +29,8 @@
 
   - Registered users (JSON only)
 
+  ![Admin Dashboard Screenshot](pics/search.jpg)
+
 - 📈 Admin dashboard with login logs and comment activity
 
 The admin panel provides an overview of login history, active users, recent comments, and login logs — all with pagination support
@@ -26,11 +38,13 @@ The admin panel provides an overview of login history, active users, recent comm
 ![Admin Dashboard Screenshot](pics/Admin_dashboard_1.jpg)
 ![Admin Dashboard Screenshot](pics/Admin_dashboard_2.jpg)
 
-
-
 - 🎓 User login, registration, password reset
 
+![Admin Dashboard Screenshot](pics/login.jpg)
+
 - 📊 Comment search and in-place management
+
+![Admin Dashboard Screenshot](pics/move_details_1.jpg)
 
 - 📚 Caching for TMDb data with scheduled re-import
 ## 📚 Tech Stack
