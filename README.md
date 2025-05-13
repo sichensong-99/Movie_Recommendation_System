@@ -3,7 +3,7 @@
   
 You can check out the live site here 👉 [movie-recommendation-system-s.onrender.com](https://movie-recommendation-system-s.onrender.com)
 <p align="center">
-  👉 <a href="https://movie-recommendation-system-s.onrender.com" target="_blank" style="text-decoration:none;">
+  <a href="https://movie-recommendation-system-s.onrender.com" target="_blank" style="text-decoration:none;">
     <strong style="background-color:#28a745;color:white;padding:10px 16px;border-radius:6px;">Click here to visit the website</strong>
   </a>
 </p>
