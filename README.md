@@ -67,4 +67,4 @@ Visit http://127.0.0.1:5000 in your browser.
 </pre>
 ## 🚀 TMDb API Key
 This app uses the TMDb API. Make sure you set your own API key in the code:
-```api_key = "your_api_key_here"```
+<pre>api_key = "your_api_key_here"</pre>
