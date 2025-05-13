@@ -3,8 +3,8 @@
   
 You can check out the live site here 👉 [movie-recommendation-system-s.onrender.com](https://movie-recommendation-system-s.onrender.com)
 <p align="center">
-  <a href="https://movie-recommendation-system-s.onrender.com" target="_blank" style="text-decoration:none;">
-    <strong style="background-color:#28a745;color:white;padding:10px 16px;border-radius:6px;">Click here to visit the website</strong>
+  👉 <a href="https://movie-recommendation-system-s.onrender.com" target="_blank">
+    <img src="https://img.shields.io/badge/Click%20Here%20to%20Visit%20Website-🔗-blueviolet?style=flat-square" alt="Click Here">
   </a>
 </p>
 
