@@ -29,7 +29,7 @@
 
   - Registered users (JSON only)
 
-  ![Admin Dashboard Screenshot](pics/search.jpg)
+  ![Admin Dashboard Screenshot](pics/export.jpg)
 
 - 📈 Admin dashboard with login logs and comment activity
 
@@ -44,9 +44,11 @@ The admin panel provides an overview of login history, active users, recent comm
 
 - 📊 Comment search and in-place management
 
-![Admin Dashboard Screenshot](pics/move_details_1.jpg)
+![Admin Dashboard Screenshot](pics/permission_control.jpg)
 
 - 📚 Caching for TMDb data with scheduled re-import
+
+![Admin Dashboard Screenshot](pics/import.jpg)
 ## 📚 Tech Stack
 - Backend: Python, Flask
 
