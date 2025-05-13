@@ -22,7 +22,8 @@
 - 📈 Admin dashboard with login logs and comment activity
 
 The admin panel provides an overview of login history, active users, and recent comments.
-<img src="pics/Admin_dashboard_1.jpg" alt="Admin Dashboard" width="1600"/>
+
+<img src="pics/Admin_dashboard_1.jpg" alt="Admin Dashboard" width="2600"/>
 
 
 - 🎓 User login, registration, password reset
