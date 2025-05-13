@@ -23,7 +23,7 @@
 
 The admin panel provides an overview of login history, active users, and recent comments.
 
-<img src="pics/Admin_dashboard_1.jpg" alt="Admin Dashboard" width="2600"/>
+<img src="pics/Admin_dashboard_1.jpg" alt="Admin Dashboard" width="5600"/>
 
 
 - 🎓 User login, registration, password reset
