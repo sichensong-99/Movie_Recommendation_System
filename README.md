@@ -11,13 +11,13 @@
 
 📥 Export data as CSV or JSON:
 
- Movie list
+- Movie list
 
-b. Movie detail (with local & TMDb reviews)
+- Movie detail (with local & TMDb reviews)
 
-c. User comments
+- User comments
 
-d. Registered users (JSON only)
+- Registered users (JSON only)
 
 📈 Admin dashboard with login logs and comment activity
 
