@@ -42,4 +42,13 @@
   git clone https://github.com/your-username/movie-rating-app.git
   cd movie-rating-app 
 </pre>
-
+2. Install dependencies
+<pre>
+  pip install -r requirements.txt
+</pre>
+3. Set environment variables
+<pre>
+export MONGO_URI='your_mongodb_connection_string'
+export FLASK_APP=app.py
+export FLASK_ENV=development
+</pre>
