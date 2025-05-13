@@ -3,8 +3,6 @@
 ## 🏠 Feature
 - 🎥 View popular movies (fetched from TMDb)
 
-![Admin Dashboard Screenshot](pics/view_movies.jpg)
-
 - 🔤 Movie detail pages with plot, cast, director, and reviews
 
 ![Admin Dashboard Screenshot](pics/move_details_1.jpg)
