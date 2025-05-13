@@ -54,6 +54,8 @@ The admin panel provides an overview of login history, active users, recent comm
 
 - 📊 **Comment search and in-place management**
 
+Comment permissions are enforced: users may edit or delete only their own comments, while others' comments are view-only.
+
 ![Admin Dashboard Screenshot](pics/permission_control.jpg)
 
 <br>
