@@ -68,3 +68,12 @@ Visit http://127.0.0.1:5000 in your browser.
 ## 🚀 TMDb API Key
 This app uses the TMDb API. Make sure you set your own API key in the code:
 <pre>api_key = "your_api_key_here"</pre>
+Apply for a free key at https://www.themoviedb.org/settings/api.
+## 🧱 Admin Access
+To enable admin dashboard access, manually set a user as admin in MongoDB:
+<pre>
+  {
+  "username": "your_username",
+  "is_admin": true
+}
+</pre>
