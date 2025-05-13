@@ -1,4 +1,14 @@
 # 🎬 Moving Recommendation System
+
+
+You can try out the website here:  
+👉 <p align="center">
+  <a href="[https://your-website-link.com](https://movie-recommendation-system-s.onrender.com
+)![image](https://github.com/user-attachments/assets/6a847aa2-5248-4db4-8f5c-8c4a22e71609)
+" target="_blank">
+    <img src="https://img.shields.io/badge/Live%20Demo-Visit-green?style=for-the-badge&logo=chrome" alt="Live Demo">
+  </a>
+</p>
   A full-stack Flask web application for browsing, reviewing, rating and exporting movie data. Integrated with The Movie Database (TMDb) API and MongoDB, this app provides real-time popular movies, user authentication, admin features, comment management, and data export tools.
 ## 🏠 Feature
 - 🎥 View popular movies (fetched from TMDb)
